@@ -9,8 +9,6 @@ if (!$mysqli) {
     exit;
 }
 $query = "SELECT * FROM `user` WHERE `login` = ? ";
-$login = $_POST['login'];
-$password = $_POST['passwd'];
 if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE) {
     die("Error1 : " . mysqli_error($mysqli));
 }
