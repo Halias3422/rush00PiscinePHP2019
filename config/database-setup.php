@@ -54,7 +54,7 @@ mysqli_close($mysqli);
 	echo "Succès : Une connexion correcte à MySQL a été faite! La base de donnée my_db est génial." . PHP_EOL;
 	echo "Information d'hôte : " . mysqli_get_host_info($mysqli) . PHP_EOL;	
 	mysqli_close($mysqli);
-	if (password_verify($col2, $password)) {
+	if (hash("md5", $password) == $col3)) {
 		header("Location: ../userSession/index.php");
     }
     // ?>

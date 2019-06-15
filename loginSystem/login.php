@@ -76,8 +76,8 @@ if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action'])
 	echo "Succès : Une connexion correcte à MySQL a été faite! La base de donnée my_db est génial." . PHP_EOL;
 	echo "Information d'hôte : " . mysqli_get_host_info($mysqli) . PHP_EOL;	
 	mysqli_close($mysqli);
-	if ($col2 == $password) {
-		$_SESSION['login'] = $col1;
+	if (hash("md5", $password) == $col3) {
+		$_SESSION['login'] = $col2;
 		$_SESSION['modo'] = $col4;
 		header("Location: ../userSession/index.php");
 	}
