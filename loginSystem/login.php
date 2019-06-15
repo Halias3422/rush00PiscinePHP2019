@@ -48,8 +48,38 @@ if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action'])
 		echo "Erreur de débogage : " . mysqli_connect_error() . PHP_EOL;
 		exit;
 	}
-	$query = "SELECT * FROM `user` WHERE `login` = ?";
-	if (($stmt = mysqli))
+	$query = "SELECT * FROM `user` WHERE `login` = ? ";
+	$login = $_POST['login'];
+	$password = $_POST['passwd'];
+	if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE) {
+		die("Error1 : " . mysqli_error($connect));
+	}
+	if (mysqli_stmt_bind_param($stmt, "s", $login) === false) {
+		die("Error2 : " . mysqli_stmt_error($stmt));
+	}
+	if (mysqli_stmt_execute($stmt) === false) {
+		die("Error3 : " . mysqli_stmt_error($stmt));
+	}
+	if (mysqli_stmt_bind_result($stmt, $col1, $col2, $col3) === FALSE) {
+		die("Error4 : " . mysqli_stmt_error($stmt));
+	}
+	/* Récupération des valeurs */
+	while (mysqli_stmt_fetch($stmt)) {
+		printf("%d %s %s\n", $col1, $col2, $col3);
+	}
+	/* Fermeture du traitement */
+	mysqli_stmt_close($stmt);
+	//$result = mysqli_stmt_get_result($stmt);
+	//mysqli_stmt_bind_result($stmt, $userId, $username, $pass);
+	//var_dump($result);
+
+	if (mysqli_errno($mysqli)) {
+    	die("Error4 : " . mysqli_stmt_error($stmt));
+	}
+	// while (mysqli_stmt_fetch($stmt)) {
+	// 	echo "check \n";
+    //     printf ("%s (%s)\n", $username. $pass);
+    // }
 
 	echo "Succès : Une connexion correcte à MySQL a été faite! La base de donnée my_db est génial." . PHP_EOL;
 	echo "Information d'hôte : " . mysqli_get_host_info($mysqli) . PHP_EOL;
@@ -57,7 +87,10 @@ if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action'])
 	mysqli_close($mysqli);
 	// $login = $_POST['login'];
 	// $passwd = $_POST['passwd'];
-	//header("Location: ../userSession/index.php");
+	echo $col2 . $password;
+	if ($col2 == $password) {
+		header("Location: ../userSession/index.php");
+	}
 }
 else if (isset($_POST['action']))
 	echo '<p class="login">Please enter a valid Login and Password<br /></pb>';

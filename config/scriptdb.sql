@@ -24,6 +24,6 @@ CREATE TABLE IF NOT EXISTS `products` (
     `category` VARCHAR(80)
 );
 
-INSERT INTO `user`(`login`, `password`) VALUE (
-    "admin", "admin"
+INSERT INTO `user`(`login`, `password`, `modo`) VALUE (
+    "admin", "admin", 'Y'
 );
