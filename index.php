@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 $_SESSION['pageStore'] = "index.php";
 var_dump($_POST);
 ?>

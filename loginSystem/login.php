@@ -81,7 +81,10 @@ if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action'])
 	if (hash("md5", $password) == $col3) {
 		$_SESSION['login'] = $col2;
 		$_SESSION['modo'] = $col4;
-		header("Location: ../userSession/index.php");
+		if ($_SESSION['login'] === "admin")
+			header("Location: ./admin/index_admin.php");
+		else
+			header("Location: ../userSession/index.php");
 	}
 }
 else if (isset($_POST['action']))
