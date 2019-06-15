@@ -82,7 +82,7 @@ if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action'])
 		$_SESSION['login'] = $col2;
 		$_SESSION['modo'] = $col4;
 		if ($_SESSION['login'] === "admin")
-			header("Location: ./admin/index_admin.php");
+			header("Location: ../admin/index_admin.php");
 		else
 			header("Location: ../userSession/index.php");
 	}
