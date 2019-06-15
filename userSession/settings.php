@@ -27,7 +27,7 @@ session_start();
 
 	</div>
 	<div class="login">
-		<form action="./signUp.php" method="POST">
+		<form action="./settings.php" method="POST">
 		<p>Delete your account :</p>
 		Login : <input name="login" value="" required />
 		<br />
@@ -40,24 +40,49 @@ session_start();
 if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action']))
 {
 	//envoyer post data a la base de donnee et verifier si check;
+	$mysqli = mysqli_connect("mysql", "root", "rootpass", "rush");
+	if (!$mysqli) {
+		echo "Erreur : Impossible de se connecter à MySQL." . PHP_EOL;
+		echo "Errno de débogage : " . mysqli_connect_errno() . PHP_EOL;
+		echo "Erreur de débogage : " . mysqli_connect_error() . PHP_EOL;
+		exit;
+	}
+	$query = "SELECT `login`,`password` FROM `user` WHERE `login` = ?  ";
 	$login = $_POST['login'];
 	$passwd = $_POST['passwd'];
-	header("Location: ../index.php");
+	if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
+		die("Error1 : " . mysqli_error($connect));
+	if (mysqli_stmt_bind_param($stmt, "s", $login) === FALSE)
+		die("Error2 : " . mysqli_stmt_error($stmt));
+	if (mysqli_stmt_execute($stmt) === FALSE)
+		die("Error3 : " . mysqli_stmt_error($stmt));
+	if (mysqli_stmt_bind_result($stmt, $col2, $col3) === FALSE)
+		die("Error4 : " . mysqli_stmt_error($stmt));
+	if (!mysqli_stmt_fetch($stmt))
+	{
+		echo "2 = $col2 3 = $col3\n";
+		echo "Bad Login or password\n";
+	}
+	else
+	{
+		//refaire une requete pour suprimer le compte
+		header("Location: ../index.php");
+	}
 }
 //if (check == 0) --> Login ou password pas trouve dans la database
-	echo '<p>Please enter a valid Login and Password<br /></pb>';
+//echo '<p>Please enter a valid Login and Password<br /></pb>';
 //else if (check == 1) --> Compte existant
 {
-	echo '<p> Are you sure you want to Delete your account ?<br />';
-	echo '<p> This action is not reversible <br />';
-	echo '<input type="submit" name="action2" value="Confirm Delete" />';
-	echo '<input type ="submit" name="action3" value="Cancel" />';
-	if (isset($_POST['action2']))
+//	echo '<p> Are you sure you want to Delete your account ?<br />';
+//	echo '<p> This action is not reversible <br />';
+//	echo '<input type="submit" name="action2" value="Confirm Delete" />';
+//	echo '<input type ="submit" name="action3" value="Cancel" />';
+//	if (isset($_POST['action2']))
 	{
 		//supprimer compte utilisateur
 	}
-	else if (isset($_POST['action3']))
-		header("Location: ../index.php");
+//	else if (isset($_POST['action3']))
+//		header("Location: ../index.php");
 }
 
 ?>
