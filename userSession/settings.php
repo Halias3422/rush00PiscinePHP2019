@@ -22,8 +22,8 @@ var_dump($_SESSION);
 		<h1><a href="#">Camagru</a></h1>
 
 		<ul>
-			<li><a href="./loginSystem/login.php">Login</a></li>
-			<li><a href="./loginSystem/register.php">Sign up</a></li>
+			<li><a href="../loginSystem/login.php">Login</a></li>
+			<li><a href="../loginSystem/register.php">Sign up</a></li>
 		</ul>
 
 	</div>
@@ -38,7 +38,7 @@ var_dump($_SESSION);
 
 <?php
 
-if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action']))
+if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action']) && isset($_SESSION['login']))
 {
 	//envoyer post data a la base de donnee et verifier si check;
 	$mysqli = mysqli_connect("mysql", "root", "rootpass", "rush");
@@ -90,7 +90,8 @@ if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action'])
 			if (mysqli_errno($mysqli))
 				die("Error4 : " . mysqli_stmt_error($stmt));
 			mysqli_close($mysqli);
-			header("Location: ../index.php");
+			if(session_destroy())
+				header("location: ../index.php");
 		}
 		else
 			echo "ELSE DE ROGER\n";
