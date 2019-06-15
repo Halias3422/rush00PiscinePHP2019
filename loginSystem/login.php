@@ -41,9 +41,23 @@ session_start();
 if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action']))
 {
 	//envoyer post data a la base de donnee et verifier si check;
-	$login = $_POST['login'];
-	$passwd = $_POST['passwd'];
-	header("Location: ../index.php");
+	$mysqli = mysqli_connect("mysql", "root", "rootpass", "rush");
+	if (!$mysqli) {
+		echo "Erreur : Impossible de se connecter à MySQL." . PHP_EOL;
+		echo "Errno de débogage : " . mysqli_connect_errno() . PHP_EOL;
+		echo "Erreur de débogage : " . mysqli_connect_error() . PHP_EOL;
+		exit;
+	}
+	$query = "SELECT * FROM `user` WHERE `login` = ?";
+	if (($stmt = mysqli))
+
+	echo "Succès : Une connexion correcte à MySQL a été faite! La base de donnée my_db est génial." . PHP_EOL;
+	echo "Information d'hôte : " . mysqli_get_host_info($mysqli) . PHP_EOL;
+	
+	mysqli_close($mysqli);
+	// $login = $_POST['login'];
+	// $passwd = $_POST['passwd'];
+	//header("Location: ../userSession/index.php");
 }
 else if (isset($_POST['action']))
 	echo '<p class="login">Please enter a valid Login and Password<br /></pb>';
