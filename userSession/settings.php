@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+var_dump($_SESSION);
 
 ?>
 
@@ -51,39 +52,51 @@ if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action'])
 	$login = $_POST['login'];
 	$passwd = $_POST['passwd'];
 	if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
-		die("Error1 : " . mysqli_error($connect));
+		die("Error1 : " . mysqli_error($mysqli));
 	if (mysqli_stmt_bind_param($stmt, "s", $login) === FALSE)
 		die("Error2 : " . mysqli_stmt_error($stmt));
 	if (mysqli_stmt_execute($stmt) === FALSE)
 		die("Error3 : " . mysqli_stmt_error($stmt));
-	if (mysqli_stmt_bind_result($stmt, $col2, $col3) === FALSE)
+	if (mysqli_stmt_bind_result($stmt, $sql_login, $sql_passwd) === FALSE)
 		die("Error4 : " . mysqli_stmt_error($stmt));
 	if (!mysqli_stmt_fetch($stmt))
-	{
-		echo "2 = $col2 3 = $col3\n";
-		echo "Bad Login or password\n";
-	}
+		echo "Login or Password invalid, Please try again\n";
 	else
 	{
-		//refaire une requete pour suprimer le compte
-		header("Location: ../index.php");
+		mysqli_stmt_close($stmt);
+		if (mysqli_errno($mysqli))
+			die("Error4 : " . mysqli_stmt_error($stmt));
+		mysqli_close($mysqli);
+		if (hash("md5", $passwd) == $sql_passwd && $login == $_SESSION['login'])
+		{
+			$mysqli = mysqli_connect("mysql", "root", "rootpass", "rush");
+			if (!$mysqli) 
+			{
+				echo "Erreur : Impossible de se connecter à MySQL." . PHP_EOL;
+				echo "Errno de débogage : " . mysqli_connect_errno() . PHP_EOL;
+				echo "Erreur de débogage : " . mysqli_connect_error() . PHP_EOL;
+				exit;
+			}
+			echo "JE SUIS LA GEN\n";
+			echo "login -- >$login\n";
+			$query = "DELETE FROM `user` WHERE `login` = ? ";
+			if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
+				die("Error1 : " . mysqli_error($mysqli));
+			if (mysqli_stmt_bind_param($stmt, "s", $login) === FALSE)
+				die("Error2 : " . mysqli_stmt_error($stmt));
+			if (mysqli_stmt_execute($stmt) === FALSE)
+				die("Error 3 : " . mysqli_stmt_error($stmt));
+			mysqli_stmt_close($stmt);
+			if (mysqli_errno($mysqli))
+				die("Error4 : " . mysqli_stmt_error($stmt));
+			mysqli_close($mysqli);
+			header("Location: ../index.php");
+		}
+		else
+			echo "ELSE DE ROGER\n";
 	}
 }
-//if (check == 0) --> Login ou password pas trouve dans la database
-//echo '<p>Please enter a valid Login and Password<br /></pb>';
-//else if (check == 1) --> Compte existant
-{
-//	echo '<p> Are you sure you want to Delete your account ?<br />';
-//	echo '<p> This action is not reversible <br />';
-//	echo '<input type="submit" name="action2" value="Confirm Delete" />';
-//	echo '<input type ="submit" name="action3" value="Cancel" />';
-//	if (isset($_POST['action2']))
-	{
-		//supprimer compte utilisateur
-	}
-//	else if (isset($_POST['action3']))
-//		header("Location: ../index.php");
-}
+
 
 ?>
 
