@@ -42,8 +42,6 @@ if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action'])
 {
 	$mysqli = mysqli_connect("mysql", "root", "rootpass", "rush");
 	$query = "SELECT * FROM `user` WHERE `login` = ? ";
-	$login = $_POST['login'];
-	$password = $_POST['passwd'];
 	if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE) {
 		die("Error1 : " . mysqli_error($connect));
 	}

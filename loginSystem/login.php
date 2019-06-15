@@ -21,7 +21,7 @@ session_start();
 	    <h1><a href="#">Camagru</a></h1>
 	
 	    <ul>
-	        <li><a href="./index.php">Login</a></li>
+	        <li><a href="./login.php">Login</a></li>
 	        <li><a href="./signUp.php">Sign up</a></li>
 	    </ul>
 
@@ -41,6 +41,7 @@ session_start();
 if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action']))
 {
 	//envoyer post data a la base de donnee et verifier si check;
+	/////////////////////////////////////////////////////////////////////////////////////////////////
 	$mysqli = mysqli_connect("mysql", "root", "rootpass", "rush");
 	if (!$mysqli) {
 		echo "Erreur : Impossible de se connecter à MySQL." . PHP_EOL;
@@ -52,7 +53,7 @@ if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action'])
 	$login = $_POST['login'];
 	$password = $_POST['passwd'];
 	if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE) {
-		die("Error1 : " . mysqli_error($connect));
+		die("Error1 : " . mysqli_error($mysqli));
 	}
 	if (mysqli_stmt_bind_param($stmt, "s",$login) === false) {
 		die("Error2 : " . mysqli_stmt_error($stmt));
@@ -76,6 +77,7 @@ if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action'])
 	echo "Succès : Une connexion correcte à MySQL a été faite! La base de donnée my_db est génial." . PHP_EOL;
 	echo "Information d'hôte : " . mysqli_get_host_info($mysqli) . PHP_EOL;	
 	mysqli_close($mysqli);
+	///////////////////////////////////////////////////////////////////////////////////////////////////
 	if (hash("md5", $password) == $col3) {
 		$_SESSION['login'] = $col2;
 		$_SESSION['modo'] = $col4;
