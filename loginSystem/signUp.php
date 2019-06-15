@@ -40,6 +40,37 @@ session_start();
 
 if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action']) && isset($_POST['conf_passwd']) && $_POST['passwd'] === $_POST['conf_passwd'])
 {
+	$mysqli = mysqli_connect("mysql", "root", "rootpass", "rush");
+	$query = "SELECT * FROM `user` WHERE `login` = ? ";
+	$login = $_POST['login'];
+	$password = $_POST['passwd'];
+	if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE) {
+		die("Error1 : " . mysqli_error($connect));
+	}
+	if (mysqli_stmt_bind_param($stmt, "s",$login) === false) {
+		die("Error2 : " . mysqli_stmt_error($stmt));
+	}
+	if (mysqli_stmt_execute($stmt) === false) {
+		die("Error3 : " . mysqli_stmt_error($stmt));
+	}
+	if (mysqli_stmt_bind_result($stmt, $col1, $col2, $col3, $col4) === FALSE) {
+		die("Error4 : " . mysqli_stmt_error($stmt));
+	}
+	/* Récupération des valeurs */
+	mysqli_stmt_fetch($stmt);
+	/* Fermeture du traitement */
+	mysqli_stmt_close($stmt);
+
+	if (mysqli_errno($mysqli)) {
+    	die("Error4 : " . mysqli_stmt_error($stmt));
+	}
+	mysqli_close($mysqli);
+	if ($col2 == $login) {
+		echo '<script> alert("this Username is already taken") </script>';
+	}
+	else {
+
+
 	//envoyer post data a la base de donnee et verifier si check;
 	$login = $_POST['login'];
 	$passwd = hash("md5", $_POST['passwd']);
@@ -69,6 +100,7 @@ if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action'])
 		}
 		mysqli_close($mysqli);
 		header("Location: ./login.php");
+	}
 }
 else if (isset($_POST['passwd']) && isset($_POST['conf_passwd']) && $_POST['passwd'] !== $_POST['conf_passwd'])
 	echo "<p>The confirmation password doesn't match the previous one</p>";
