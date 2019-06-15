@@ -1,6 +1,17 @@
 <?php
 session_start();
 
+var_dump($_POST);
+$product_id = [];
+$path = [];
+$category = [];
+$left = [];
+$price = [];
+$product_name = [];
+
+$row = 0;
+$i = 0;
+
 $mysqli = mysqli_connect("mysql", "root", "rootpass", "rush");
 if (!$mysqli) {
     echo "Erreur : Impossible de se connecter à MySQL." . PHP_EOL;
@@ -8,23 +19,37 @@ if (!$mysqli) {
     echo "Erreur de débogage : " . mysqli_connect_error() . PHP_EOL;
     exit;
 }
-$query = "SELECT * FROM `user` WHERE `login` = ? ";
+$query = "SELECT * FROM `products`";
 if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE) {
     die("Error1 : " . mysqli_error($mysqli));
-}
-if (mysqli_stmt_bind_param($stmt, "s",$login) === false) {
-    die("Error2 : " . mysqli_stmt_error($stmt));
 }
 if (mysqli_stmt_execute($stmt) === false) {
     die("Error3 : " . mysqli_stmt_error($stmt));
 }
-if (mysqli_stmt_bind_result($stmt, $col1, $col2, $col3, $col4) === FALSE) {
+if (mysqli_stmt_bind_result($stmt, $col1, $col2, $col3, $col4, $col5, $col6) === FALSE) {
     die("Error4 : " . mysqli_stmt_error($stmt));
 }
 /* Récupération des valeurs */
 while (mysqli_stmt_fetch($stmt)) {
-    printf("%d %s %s\n", $col1, $col2, $col3, $col4);
+    $row += 1;
+    array_push($product_id, $col1);
+    array_push($product_name, $col2);
+    array_push($price, $col3);
+    array_push($left, $col4);
+    array_push($category, $col5);
+    array_push($path, $col6);
+    //var_dump($col6);
 }
+// var_dump($product_id); echo "<br>";
+// var_dump($product_name); echo "<br>";
+// var_dump($price); echo "<br>";
+// var_dump($left); echo "<br>";
+// var_dump($category); echo "<br>";
+// var_dump($path); echo "<br> <br>";
+
+// echo $row . "<br>";
+
+
 /* Fermeture du traitement */
 mysqli_stmt_close($stmt);
 
@@ -40,7 +65,7 @@ mysqli_close($mysqli);
 
 <!DOCTYPE html>
 <html>
-head>
+<head>
 
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -65,5 +90,51 @@ head>
 </div>
 
 </header>
+<?php while($i < $row) { ?>
+    <form method="post" action="#">
+    <div>
+        <?php if ($category[$i] == "kinder") { ?>
+        <div>
+            <img width="150" height="150" src="<?php echo $path[$i]; ?>">
+            <p> <?php echo $price[$i]; ?> $</p>
+            <input type="number" min="0"max="<?php echo $left[$i] ?>" name="quantityOf<?php echo $product_id[$i]; ?>" value="0"/>
+            <input type="hidden" name="<?php echo $product_id[$i]; ?>" value="<?php echo $product_name[$i]?>">
+
+        </div>
+        <?php } ?>
+
+        <?php if ($category[$i] == "ferero") { ?>
+        <div>
+            <img width="150" height="150" src="<?php echo $path[$i]; ?>">
+            <p> <?php echo $price[$i]; ?> $</p>
+            <input type="number" min="0" max="<?php echo $left[$i] ?>" name="quantityOf<?php echo $product_id[$i]; ?>" value="0"/>
+            <input type="hidden" name="<?php echo $product_id[$i]; ?>" value="<?php echo $product_name[$i]?>">
+        </div>
+        <?php } ?>
+
+        <?php if ($category[$i] == "milka") { ?>
+        <div>
+            <img width="150" height="150" src="<?php echo $path[$i]; ?>">
+            <p> <?php echo $price[$i]; ?> $</p>
+            <input type="number" min="0" max="<?php echo $left[$i] ?>" name="quantityOf<?php echo $product_id[$i]; ?>" value="0"/>
+            <input type="hidden" name="<?php echo $product_id[$i]; ?>" value="<?php echo $product_name[$i]?>">
+        </div>
+        <?php } ?>
+
+        <?php if ($category[$i] == "cote d'or") { ?>
+        <div>
+            <img width="150" height="150" src="<?php echo $path[$i]; ?>">
+            <p> <?php echo $price[$i]; ?> $</p>
+            <input type="number" min="0" max="<?php echo $left[$i] ?>" name="quantityOf<?php echo $product_id[$i]; ?>" value="0"/>
+            <input type="hidden" name="<?php echo $product_id[$i]; ?>" value="<?php echo $product_name[$i]?>">
+        </div>
+        <?php } ?>
+    </div>
+<?php $i++; } ?>
+<button type="submit" name="action" value="addInBasket">Add items in basket </button>
+<form>
+
+
+</body>
 
 </html>
