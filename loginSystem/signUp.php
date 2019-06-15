@@ -21,8 +21,8 @@ session_start();
 		<h1><a href="#">Camagru</a></h1>
 
 		<ul>
-			<li><a href="./loginSystem/login.php">Login</a></li>
-			<li><a href="./loginSystem/register.php">Sign up</a></li>
+			<li><a href="./login.php">Login</a></li>
+			<li><a href="./signUp.php">Sign up</a></li>
 		</ul>
 
 	</div>
@@ -42,8 +42,33 @@ if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action'])
 {
 	//envoyer post data a la base de donnee et verifier si check;
 	$login = $_POST['login'];
-	$passwd = $_POST['passwd'];
-	header("Location: ../index.php");
+	$passwd = hash("md5", $_POST['passwd']);
+		//envoyer post data a la base de donnee et verifier si check;
+		$mysqli = mysqli_connect("mysql", "root", "rootpass", "rush");
+		if (!$mysqli) {
+			echo "Erreur : Impossible de se connecter à MySQL." . PHP_EOL;
+			echo "Errno de débogage : " . mysqli_connect_errno() . PHP_EOL;
+			echo "Erreur de débogage : " . mysqli_connect_error() . PHP_EOL;
+			exit;
+		}
+		$query = "INSERT INTO `user`(`login`, `password`, `modo`) VALUE(?, ?, ?)";
+		$modo = 'N';
+		if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE) {
+			die("Error1 : " . mysqli_error($mysqli));
+		}
+		if (mysqli_stmt_bind_param($stmt, "sss", $login, $passwd, $modo) === false) {
+			die("Error2 : " . mysqli_stmt_error($stmt));
+		}
+		if (mysqli_stmt_execute($stmt) === false) {
+			die("Error3 : " . mysqli_stmt_error($stmt));
+		}
+		/* Fermeture du traitement */
+		mysqli_stmt_close($stmt);	
+		if (mysqli_errno($mysqli)) {
+			die("Error4 : " . mysqli_stmt_error($stmt));
+		}
+		mysqli_close($mysqli);
+		header("Location: ./login.php");
 }
 else if (isset($_POST['passwd']) && isset($_POST['conf_passwd']) && $_POST['passwd'] !== $_POST['conf_passwd'])
 	echo "<p>The confirmation password doesn't match the previous one</p>";
