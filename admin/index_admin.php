@@ -138,6 +138,11 @@ else if (isset($_GET) && isset($_GET['page']) && ($_GET['page'] == "create_user"
 			<input type="text" name="last_name" required> <br><br>
 			<label for="titre">Email</label><br>
 			<input type="email" name="email" required> <br><br>
+			<label for="modo">Administrateur</label><br>
+			<select name="modo">
+				<option value="N">No</option>
+				<option value="Y">Yes</option>
+			</select><br/><br/>
 			<label for="titre">Password</label><br>
 			<input type="password" name="passwd" required> <br><br>
 			<label for="titre">Confirm Password</label><br>
