@@ -5,32 +5,42 @@ $_SESSION['pageStore'] = "index.php";
 var_dump($_POST);
 require_once ("../function/mysqli_function.php");
 ?>
-
 <!DOCTYPE html>
 <html>
-<head>
+	<head>
+		<link rel="stylesheet" href="../menu.css">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Chocolatte</title>
+	</head>
+	<body>
+	<header>
+	<h1 class="deco">Chocolatte</h1>
+	<nav>
+		<ul>
+<?php
+var_dump($_SESSION);
+if (isset($_SESSION))
+{
+	if (isset($_SESSION['modo']) && $_SESSION['modo'] == 'Y')
+	{
 
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Camagru</title>
-
-
-</head>
-
-<body>
-<header style="background-color: grey;">
-
-<div>
-	<h1><a href="#">Camagru</a></h1>
-
-	<ul>
-		<li><a href="../loginSystem/login.php">Login</a></li>
-		<li><a href="../userSession/panier.php">Panier</a></li>
-	</ul>
-
-</div>
-<div>
+?>
+		<li><a href="../userSession/settings.php">Setting</a></li>
+		<li><a href="../index.php">disconnect</a></li>
+<?php
+	}
+?>
+		<li><a href="../index.php">vitrine</li>
+		<li><a href="../loginSystem/login.php">Log in</a></li>
+		<li><a href="../loginSystem/signUp.php">Sign in</a></li>
+		<li><a href="../userSession/panier.php">panier</a></li>
+<?php
+}
+?>
+		</ul>
+	</nav>
 </header>
 <form method="post" enctype="multipart/form-data" action="./index_admin.php">
 	<input type='submit' name='create_product' value='Register Product'/>
@@ -164,4 +174,5 @@ else if (isset($_GET) && isset($_GET['page']) && ($_GET['page'] == "create_user"
 }
 
 ?>
+</body>
 </html>
