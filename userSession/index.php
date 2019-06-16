@@ -141,8 +141,6 @@ mysqli_close($mysqli);
 <input type="submit" name="action" value="addInBasket">
 </div>
 <form>
-
-
-</body>
-
-</html
+<?php
+require_once("../footer.php")
+?>

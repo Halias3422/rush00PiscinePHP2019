@@ -33,6 +33,5 @@ if (isset($_POST['login']))
 	else if (isset($_POST['action']))
 		echo '<p>Please enter a valid Login and Password<br /></p>';
 }
+require_once("../footer.php");
 ?>
-	</body>
-</html>

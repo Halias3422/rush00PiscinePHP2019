@@ -56,9 +56,5 @@ if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action'])
 			delete_user(0);
 	}
 }
+require_once("../footer.php");
 ?>
-
-<!DOCTYPE html>
-
-	</body>
-	</html>

@@ -149,7 +149,5 @@ if (isset($_GET) && isset($_GET['page']) && $_GET['page'] == "command_hist")
 {
 	print_command_history();
 }
-
+require_once("../footer.php");
 ?>
-</body>
-</html>
