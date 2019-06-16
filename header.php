@@ -13,7 +13,6 @@
 	<nav>
 		<ul>
 <?php
-var_dump($_SESSION);
 if (isset($_SESSION))
 {
 	if (isset($_SESSION['modo']) && $_SESSION['modo'] == 'Y')
