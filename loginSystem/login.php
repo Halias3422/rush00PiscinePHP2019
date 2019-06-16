@@ -2,15 +2,17 @@
 require_once("../header.php");
 include ("../function/mysqli_function.php");
 ?>
-	<div class="login">
+<div class="outer">
+	<div class="login, center">
 		<form action="./login.php" method="POST">
-			<label for="titre">Login:</label><br>
-			<input type="text" name="login" required> <br><br>
-			<label for="titre">Password</label><br>
-			<input type="password" name="passwd" required> <br><br>
-			<input type="submit" name="action" value="Log In" />
+			<label for="titre">Login</label><br>
+			<input type="text" name="login" class="input_sz" required> <br><br>
+			<label for="titre" class="label_sz">Password</label><br>
+			<input type="password" name="passwd" class="input_sz" required> <br><br>
+			<input type="submit" name="action" class="submit_bt" value="Log In" />
 		</form>
 	</div>
+</div>
 <?php
 
 if (isset($_POST['login']))

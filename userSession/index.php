@@ -89,7 +89,7 @@ mysqli_close($mysqli);
 	<div class="row">
 	<?php while($i < $row) { ?>
 		<?php if ($category[$i] == "kinder" && $left[$i] > 0) { if ($cat == 0) { ?>
-			<?php echo "<h3>&nbsp&nbsp&nbsp". $category[$i] . "</h3>";} $cat = 1; ?>
+			<?php echo '<h3>&nbsp&nbsp&nbsp'. $category[$i] . "</h3>";} $cat = 1; ?>
 			<div class="w33">
 			<img width="150" height="150" src="<?php echo $path[$i]; ?>">
 			<p> <?php echo $price[$i]; ?> $</p>

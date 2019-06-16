@@ -32,20 +32,24 @@ if (isset($_GET['user']) && $_GET['user'] == "log") {
 		die("Error4 : " . mysqli_stmt_error($stmt));
 	}
 	/* Récupération des valeurs */
+	echo '<div class="outer">';
 	while (mysqli_stmt_fetch($stmt)) {
+
+		echo '<div class="center">';
 		echo '<p>' . $col1 . "   quantity : " . $col3 . "   / price = " . $col2 * $col3 . " $</p>";
 
 		echo '<form method="post" action="./panier.php?user=log">';
-		echo '<input type="submit" name="action" value="deleteProduct">';
+		echo '<input type="submit" name="action" class="submit_bt" value="deleteProduct">';
 		echo '<input type="hidden" name="product" value="' . $col1 .'">';
 		echo '</form>';
 		$totalPrice += $col2 * $col3;
 	}
 	echo '<p> Total Price = ' . $totalPrice . ' $</p>';
 	echo '<form method="post" action="./panier.php?user=log">';
-	echo '<input type="submit"  name="action" value="Buy">';
+	echo '<input type="submit"  name="action" class="submit_bt" value="Buy">';
 	echo '<input type="hidden" name="totalPrice" value="'. $totalPrice .'">';
 	echo '</form>';
+	echo '</div></div>';
 	mysqli_shutdown($stmt, $mysqli);
 ?>
 

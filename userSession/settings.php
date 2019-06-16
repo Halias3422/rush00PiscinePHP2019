@@ -3,8 +3,8 @@ require_once("../header.php");
 require_once ("../function/mysqli_function.php");
 ?>
 </i><form method="post" enctype="multipart/form-data">
-	<input type='submit' name='modify_account' value='Modify My Settings'/>
-	<input type='submit' name='delete_account' value='Delete My Account'/>
+	<input type='submit' name='modify_account' class="option_bt" value='Modify My Settings'/>
+	<input type='submit' name='delete_account'  class="option_bt" value='Delete My Account'/>
 </form>
 <?php
 if (isset($_POST) && isset($_POST['modify_account']))
@@ -17,33 +17,35 @@ if (isset($_POST) && isset($_POST['delete_account']))
 if (isset($_GET) && isset($_GET['page']) && $_GET['page'] == "delete_account")
 {
 ?>
-	<div class="login">
+	<div class="outer">
+	<div class="login, center">
 		<form method="POST">
 			<label for="titre">Login</label><br>
-			<input type="text" name="login" required> <br><br>
+			<input type="text" name="login" class="input_sz"required> <br><br>
 			<label for="titre">Password</label><br>
-			<input type="password" name="passwd" required> <br><br>
-			<input type="submit" name="action" value="DEFINITIVELY DELETE MY ACCOUNT" />
+			<input type="password" name="passwd"class="input_sz" required> <br><br>
+			<input type="submit" name="action" class="submit_bt"value="DELETE" />
 		</form>
-	</div>
+	</div></div>
 <?PHP
 }
 else if (isset($_GET) && isset($_GET['page']) && $_GET['page'] == "modify_account")
 {
 ?>
-	<div class="login">
+	<div class="outer">
+	<div class="login, center">
 		<form method="POST">
-			<label for="titre">First Name</label><br>
-			<input type="text" name="first_name" required> <br><br>
-			<label for="titre">Last Name</label><br>
-			<input type="text" name="last_name" required> <br><br>
-			<label for="titre">Email</label><br>
-			<input type="email" name="email" required> <br><br>
-			<label for="titre">Password</label><br>
-			<input type="password" name="passwd" required> <br><br>
-			<input type="submit" name="action" value="Modify My Data" />
+			<label for="titre" class="label_sz">First Name</label><br>
+			<input type="text" class="input_sz" name="first_name" required> <br><br>
+			<label for="titre" class="label_sz">Last Name</label><br>
+			<input type="text"class="input_sz"  name="last_name" required> <br><br>
+			<label for="titre" class="label_sz">Email</label><br>
+			<input type="email" class="input_sz"name="email" required> <br><br>
+			<label for="titre" class="label_sz">Password</label><br>
+			<input type="password" class="input_sz" name="passwd" required> <br><br>
+			<input type="submit" name="action" class="submit_bt" value="Modify My Data" />
 		</form>
-	</div>
+	</div></div>
 <?php
 }
 if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action']) && isset($_SESSION['login']))
