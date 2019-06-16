@@ -1,7 +1,8 @@
 <?php
 session_start();
+include("../function/mysqli_function.php");
+include("../function/mysqli_function2.php");
 
-var_dump($_POST);
 $product_id = [];
 $path = [];
 $category = [];
@@ -13,14 +14,11 @@ $row = 0;
 $i = 0;
 $cat = 0;
 
-$mysqli = mysqli_connect("mysql", "root", "rootpass", "rush");
-if (!$mysqli) {
-    echo "Erreur : Impossible de se connecter à MySQL." . PHP_EOL;
-    echo "Errno de débogage : " . mysqli_connect_errno() . PHP_EOL;
-    echo "Erreur de débogage : " . mysqli_connect_error() . PHP_EOL;
-    exit;
-}
-$query = "SELECT * FROM `products`";
+ $mysqli = mysqli_connect("mysql", "root", "rootpass", "rush");
+ $query = "SELECT * FROM `products`";
+ if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE) {
+     die("Error1 : " . mysqli_error($mysqli));
+ }
 if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE) {
     die("Error1 : " . mysqli_error($mysqli));
 }
@@ -46,6 +44,44 @@ if (mysqli_errno($mysqli)) {
     die("Error4 : " . mysqli_stmt_error($stmt));
 }
 mysqli_close($mysqli);
+
+if (isset($_POST['action']) && $_POST['action'] == "addInBasket") {
+    $j = 0;
+    $user_tmp = 1;
+    $items = 1;
+    $validProducts = 0;
+    $singleProduct = [];
+    $product = count($_POST) - 1;
+    foreach ($_POST as $key=>$value) {
+        if ($j < 3) {
+            if ($value == "0") {
+                $validProducts = 1;
+            }
+            array_push($singleProduct, $value);
+            $j++;
+        }
+        if ($j == 3 && $validProducts == 0 && checkUserBasket($singleProduct) == TRUE) {
+            addInBasket($singleProduct);
+            updateProductAmount($singleProduct);
+            $j = 0;
+            $items++;
+            $singleProduct = [];
+        }
+        if ($j == 3 && $validProducts == 0 && checkUserBasket($singleProduct) == FALSE) {
+            updateBasket($singleProduct);
+            updateProductAmount($singleProduct);
+            $j = 0;
+            $items++;
+            $singleProduct = [];
+        }
+        if ($j == 3 && $validProducts == 1) {
+            $j = 0;
+            $items++;
+            $singleProducts = [];
+            $validProducts = 0;
+        }
+    }
+}
 
 
 ?>
@@ -80,44 +116,48 @@ mysqli_close($mysqli);
     <form method="post" action="#">
     <div>
     <?php while($i < $row) { ?>
-        <?php if ($category[$i] == "kinder") { if ($cat == 0) { echo "<p>" . $category[$i] . "</p>";} $cat = 1; ?>
+        <?php if ($category[$i] == "kinder" && $left[$i] > 0) { if ($cat == 0) { echo "<p>" . $category[$i] . "</p>";} $cat = 1; ?>
         <div>
             <img width="150" height="150" src="<?php echo $path[$i]; ?>">
             <p> <?php echo $price[$i]; ?> $</p>
             <input type="number" min="0"max="<?php echo $left[$i] ?>" name="quantityOf<?php echo $product_id[$i]; ?>" value="0"/>
             <input type="hidden" name="<?php echo $product_id[$i]; ?>" value="<?php echo $product_name[$i]?>">
+            <input type="hidden" name="<?php echo "price" . $i; ?>" value="<?php echo $price[$i]; ?>">
         </div>
         <?php } $i++; } $i = 0; $cat = 0;?>
     </div>
     <div>
     <?php while($i < $row) { ?>
-        <?php if ($category[$i] == "ferero") { if ($cat == 0) { echo "<p>" . $category[$i] . "</p>";} $cat = 1; ?>
+        <?php if ($category[$i] == "ferero" && $left[$i] > 0) { if ($cat == 0) { echo "<p>" . $category[$i] . "</p>";} $cat = 1; ?>
         <div>
             <img width="150" height="150" src="<?php echo $path[$i]; ?>">
             <p> <?php echo $price[$i]; ?> $</p>
             <input type="number" min="0" max="<?php echo $left[$i] ?>" name="quantityOf<?php echo $product_id[$i]; ?>" value="0"/>
             <input type="hidden" name="<?php echo $product_id[$i]; ?>" value="<?php echo $product_name[$i]?>">
+            <input type="hidden" name="<?php echo "price" . $i; ?>" value="<?php echo $price[$i]; ?>">
         </div>
         <?php } $i++; } $i = 0; $cat = 0;?>
     </div>
     <div>
     <?php while($i < $row) { ?>
-        <?php if ($category[$i] == "milka") { if ($cat == 0) { echo "<p>" . $category[$i] . "</p>";} $cat = 1;?>
+        <?php if ($category[$i] == "milka" && $left[$i] > 0) { if ($cat == 0) { echo "<p>" . $category[$i] . "</p>";} $cat = 1;?>
         <div>
             <img width="150" height="150" src="<?php echo $path[$i]; ?>">
             <p> <?php echo $price[$i]; ?> $</p>
             <input type="number" min="0" max="<?php echo $left[$i] ?>" name="quantityOf<?php echo $product_id[$i]; ?>" value="0"/>
             <input type="hidden" name="<?php echo $product_id[$i]; ?>" value="<?php echo $product_name[$i]?>">
+            <input type="hidden" name="<?php echo "price" . $i; ?>" value="<?php echo $price[$i]; ?>">
         </div>
         <?php } $i++; } $i = 0; $cat = 0;?>
     </div>
     <?php while($i < $row) { ?>
-        <?php if ($category[$i] == "cote d'or") { if ($cat == 0) { echo "<p>" . $category[$i] . "</p>";} $cat = 1; ?>
+        <?php if ($category[$i] == "cote d'or" && $left[$i] > 0) { if ($cat == 0) { echo "<p>" . $category[$i] . "</p>";} $cat = 1; ?>
         <div>
             <img width="150" height="150" src="<?php echo $path[$i]; ?>">
             <p> <?php echo $price[$i]; ?> $</p>
             <input type="number" min="0" max="<?php echo $left[$i] ?>" name="quantityOf<?php echo $product_id[$i]; ?>" value="0"/>
             <input type="hidden" name="<?php echo $product_id[$i]; ?>" value="<?php echo $product_name[$i]?>">
+            <input type="hidden" name="<?php echo "price" . $i; ?>" value="<?php echo $price[$i]; ?>">
         </div>
         <?php } $i++; } $i = 0; $cat = 0;?>
     </div>
