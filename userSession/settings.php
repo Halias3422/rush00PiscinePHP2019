@@ -77,8 +77,6 @@ if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action'])
 				echo "Erreur de débogage : " . mysqli_connect_error() . PHP_EOL;
 				exit;
 			}
-			echo "JE SUIS LA GEN\n";
-			echo "login -- >$login\n";
 			$query = "DELETE FROM `user` WHERE `login` = ? ";
 			if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
 				die("Error1 : " . mysqli_error($mysqli));
