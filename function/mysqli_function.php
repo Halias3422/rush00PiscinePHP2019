@@ -163,7 +163,7 @@ function modify_product()
 			if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
 				die("Error1 : " . mysqli_error($mysqli));
 			if (mysqli_stmt_bind_param($stmt, "sddss", $path, $price, $left, $category, $product_name) === FALSE)
-					die("Error2 : " . mysqli_stmt_error($stmt));
+				die("Error2 : " . mysqli_stmt_error($stmt));
 			if (mysqli_stmt_execute($stmt) === FALSE)
 				die("Error3 : " . mysqli_stmt_error($stmt));
 			echo "<br/> Product informations successfully updated";
@@ -203,7 +203,7 @@ function modify_user()
 			if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
 				die("Error1 : " . mysqli_error($mysqli));
 			if (mysqli_stmt_bind_param($stmt, "ssssss", $password, $modo, $first_name, $last_name, $email, $login) === FALSE)
-					die("Error2 : " . mysqli_stmt_error($stmt));
+				die("Error2 : " . mysqli_stmt_error($stmt));
 			if (mysqli_stmt_execute($stmt) === FALSE)
 				die("Error3 : " . mysqli_stmt_error($stmt));
 			echo "<br/> User informations successfully updated";
@@ -212,6 +212,49 @@ function modify_user()
 		else if ($password != $_POST['conf_passwd'])
 			echo "<br>The two passwords entered are differents, please try again";
 	}
+}
+
+function delete_user($mode)
+{
+	$mysqli = mysqli_open();
+	$query = 'SELECT `login`,`password` FROM `user` WHERE `login` = ? ';
+	$login = $_POST['login'];
+	if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
+		die("Error1caca : " . mysqli_error($mysqli));
+	if (mysqli_stmt_bind_param($stmt, "s", $login) === FALSE)
+		die("Error2 : " . mysqli_stmt_error($stmt));
+	if (mysqli_stmt_execute($stmt) === FALSE)
+		die("Error3 : " . mysqli_stmt_error($stmt));
+	if (mysqli_stmt_bind_result($stmt, $sql_login, $sql_passwd) === FALSE)
+		die("Error4 : " . mysqli_stmt_error($stmt));
+	if (!mysqli_stmt_fetch($stmt))
+		echo "<br/>This user is not registered in the batabase";
+	else
+	{
+		mysqli_shutdown($stmt, $mysqli);
+		if (($mode == 0 && !isset($_SESSION)) || (isset($_SESSION) && isset($_SESSION['login']) && $login != $_SESSION['login']))
+		{
+			echo "You don't have the right to remove other user's account";
+			exit;
+		}
+		if ($login == $sql_login && ($mode || hash('md5', ($_POST['passwd'])) == $sql_passwd))
+		{
+			$mysqli= mysqli_open();
+			$query = "DELETE FROM `user` WHERE `login` = ? ";
+			if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
+				die("Error1 : " . mysqli_error($mysqli));
+			if (mysqli_stmt_bind_param($stmt, "s", $login) === FALSE)
+				die("Error2 : " . mysqli_stmt_error($stmt));
+			if (mysqli_stmt_execute($stmt) === FALSE)
+				die("Error 3 : " . mysqli_stmt_error($stmt));
+			mysqli_stmt_close($stmt);
+			if (mysqli_errno($mysqli))
+				die("Error4 : " . mysqli_stmt_error($stmt));
+			mysqli_close($mysqli);
+			echo "<br/>User successfully deleted from the database";
+		}
+	}
 
 }
+
 ?>

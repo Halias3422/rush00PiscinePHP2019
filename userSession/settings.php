@@ -2,20 +2,16 @@
 
 session_start();
 var_dump($_SESSION);
-include ("../function/mysqli_function.php");
+require_once ("../function/mysqli_function.php");
 
 ?>
-
 	<html>
 	<head>
-
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Camagru</title>
-
 	</head>
-
 	<body>
 	<div style="background-color: grey">
 		<h1><a href="#">Camagru</a></h1>
@@ -42,7 +38,7 @@ if (isset($_GET) && isset($_GET['page']) && $_GET['page'] == "delete_account")
 {
 ?>
 	<div class="login">
-		<form action="./settings.php" method="POST">
+		<form method="POST">
 			<label for="titre">Login</label><br>
 			<input type="text" name="login" required> <br><br>
 			<label for="titre">Password</label><br>
@@ -56,7 +52,7 @@ else if (isset($_GET) && isset($_GET['page']) && $_GET['page'] == "modify_accoun
 {
 ?>
 	<div class="login">
-		<form action="./settings.php" method="POST">
+		<form method="POST">
 			<label for="titre">First Name</label><br>
 			<input type="text" name="first_name" required> <br><br>
 			<label for="titre">Last Name</label><br>
@@ -74,10 +70,10 @@ if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action'])
 {
 	if (isset($_GET))
 	{
-		if (isset($_GET['modify_account']))
+		if (isset($_GET['page']) && $_GET['page'] == "modify_account")
 			modify_user();
-		if (isset($_GET['delete_account']))
-			delete_user();
+		if (isset($_GET['page']) && $_GET['page'] == "delete_account")
+			delete_user(0);
 	}
 }
 ?>
