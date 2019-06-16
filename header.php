@@ -47,6 +47,7 @@
                         <li><a href="./loginSystem/login.php">Log in</a></li>
                         <li><a href="./loginSystem/signUp.php">Sign in</a></li>
                         <?php //else ?>
+                        <li><a href="./userSession/settings.php">Setting</a></li>
                         <li><a href="~/index.php">disconnect</a></li> <?php // deconnecter user?>
                     
                 </ul>
