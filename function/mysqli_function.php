@@ -232,7 +232,7 @@ function delete_user($mode)
 	else
 	{
 		mysqli_shutdown($stmt, $mysqli);
-		if (($mode == 0 && !isset($_SESSION)) || (isset($_SESSION) && isset($_SESSION['login']) && $login != $_SESSION['login']))
+		if ($mode != 1 && (($mode == 0 && !isset($_SESSION)) || (isset($_SESSION) && isset($_SESSION['login']) && $login != $_SESSION['login'])))
 		{
 			echo "You don't have the right to remove other user's account";
 			exit;
