@@ -45,7 +45,7 @@ function create_user()
 		$mysqli = mysqli_open();
 		$query = "INSERT INTO `user`(`login`, `password`, `modo`, `first_name`, `last_name`, `email`) VALUE(?, ?, ?, ?, ?, ?)";
 		$modo = 'N';
-		$passwd = hash("md5", $_POST['passwd']);
+		$passwd = hash("whirlpool", $_POST['passwd']);
 		$first_name = $_POST['first_name'];
 		$last_name = $_POST['last_name'];
 		$email = $_POST['email'];
@@ -56,61 +56,6 @@ function create_user()
 		if (mysqli_stmt_execute($stmt) === false)
 			die("Error3 : " . mysqli_stmt_error($stmt));
 		mysqli_shutdown($stmt, $mysqli);
-	}
-}
-
-function delete_user()
-{
-	$mysqli = mysqli_connect("mysql", "root", "rootpass", "rush");
-	if (!$mysqli) {
-		echo "Erreur : Impossible de se connecter à MySQL." . PHP_EOL;
-		echo "Errno de débogage : " . mysqli_connect_errno() . PHP_EOL;
-		echo "Erreur de débogage : " . mysqli_connect_error() . PHP_EOL;
-		exit;
-	}
-	$query = "SELECT `login`,`password` FROM `user` WHERE `login` = ?  ";
-	$login = $_POST['login'];
-	$passwd = $_POST['passwd'];
-	if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
-		die("Error1 : " . mysqli_error($mysqli));
-	if (mysqli_stmt_bind_param($stmt, "s", $login) === FALSE)
-		die("Error2 : " . mysqli_stmt_error($stmt));
-	if (mysqli_stmt_execute($stmt) === FALSE)
-		die("Error3 : " . mysqli_stmt_error($stmt));
-	if (mysqli_stmt_bind_result($stmt, $sql_login, $sql_passwd) === FALSE)
-		die("Error4 : " . mysqli_stmt_error($stmt));
-	if (!mysqli_stmt_fetch($stmt))
-		echo "Login or Password invalid, Please try again\n";
-	else
-	{
-		mysqli_stmt_close($stmt);
-		if (mysqli_errno($mysqli))
-			die("Error4 : " . mysqli_stmt_error($stmt));
-		mysqli_close($mysqli);
-		if (hash("md5", $passwd) == $sql_passwd && $login == $_SESSION['login'])
-		{
-			$mysqli = mysqli_connect("mysql", "root", "rootpass", "rush");
-			if (!$mysqli) 
-			{
-				echo "Erreur : Impossible de se connecter à MySQL." . PHP_EOL;
-				echo "Errno de débogage : " . mysqli_connect_errno() . PHP_EOL;
-				echo "Erreur de débogage : " . mysqli_connect_error() . PHP_EOL;
-				exit;
-			}
-			$query = "DELETE FROM `user` WHERE `login` = ? ";
-			if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
-				die("Error1 : " . mysqli_error($mysqli));
-			if (mysqli_stmt_bind_param($stmt, "s", $login) === FALSE)
-				die("Error2 : " . mysqli_stmt_error($stmt));
-			if (mysqli_stmt_execute($stmt) === FALSE)
-				die("Error 3 : " . mysqli_stmt_error($stmt));
-			mysqli_stmt_close($stmt);
-			if (mysqli_errno($mysqli))
-				die("Error4 : " . mysqli_stmt_error($stmt));
-			mysqli_close($mysqli);
-			if(session_destroy())
-				header("location: ../index.php");
-		}
 	}
 }
 
@@ -218,7 +163,7 @@ function modify_product()
 			if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
 				die("Error1 : " . mysqli_error($mysqli));
 			if (mysqli_stmt_bind_param($stmt, "sddss", $path, $price, $left, $category, $product_name) === FALSE)
-				die("Error2 : " . mysqli_stmt_error($stmt));
+					die("Error2 : " . mysqli_stmt_error($stmt));
 			echo "path = $path price = $price left = $left category = $category prodname = $product_name";
 			if (mysqli_stmt_execute($stmt) === FALSE)
 				die("Error3 : " . mysqli_stmt_error($stmt));
@@ -226,5 +171,42 @@ function modify_product()
 			mysqli_shutdown($stmt, $mysqli);
 		}
 	}
+}
+
+function modify_user()
+{
+	$mysqli = mysqli_open();
+	$query = "SELECT `login` FROM `user` WHERE `login` = ? ";
+	$login = $_POST['login'];
+	if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
+		die("Error1 : " . mysqli_error($mysqli));
+	if (mysqli_stmt_bind_param($stmt, "s", $login) === FALSE)
+		die("Error2 : " . mysqli_stmt_error($stmt));
+	if (mysqli_stmt_execute($stmt) === FALSE)
+		die("Error3 : " . mysqli_stmt_error($stmt));
+	if (mysqli_stmt_bind_result($stmt, $sql_modif_user) === FALSE)
+		die("Error4 : " . mysqli_stmt_error($stmt));
+	if (!mysqli_stmt_fetch($stmt))
+		echo "<br/>This user is not registered in the batabase";
+	else
+	{
+		mysqli_shutdown($stmt, $mysqli);
+		if ($login == $sql_modif_user)
+		{
+			$pasword = hash(MD5, $_POST['passwd']);
+			$mysqli = mysqli_open();
+			$query = 'UPDATE `products` SET `path` = ? , `price` = ?, `left` = ?, `category` = ?  WHERE `product_name` = ? ';
+			if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
+				die("Error1 : " . mysqli_error($mysqli));
+			if (mysqli_stmt_bind_param($stmt, "sddss", $path, $price, $left, $category, $product_name) === FALSE)
+					die("Error2 : " . mysqli_stmt_error($stmt));
+			echo "path = $path price = $price left = $left category = $category prodname = $product_name";
+			if (mysqli_stmt_execute($stmt) === FALSE)
+				die("Error3 : " . mysqli_stmt_error($stmt));
+			echo "<br/> Product informations successfully updated";
+			mysqli_shutdown($stmt, $mysqli);
+		}
+	}
+
 }
 ?>
