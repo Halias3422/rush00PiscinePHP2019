@@ -157,7 +157,7 @@ else if (isset($_GET) && isset($_GET['page']) && ($_GET['page'] == "create_user"
 	}
 	if ($_GET['page'] == "create_user" && isset($_POST['action']))
 		create_user();
-	else if ($_GET['page'] == "modif_user" && isset($_POST['action_mod']))
+	else if ($_GET['page'] == "modify_user" && isset($_POST['action_mod']))
 		modify_user();
 }
 

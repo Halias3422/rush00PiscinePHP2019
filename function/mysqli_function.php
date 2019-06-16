@@ -164,7 +164,6 @@ function modify_product()
 				die("Error1 : " . mysqli_error($mysqli));
 			if (mysqli_stmt_bind_param($stmt, "sddss", $path, $price, $left, $category, $product_name) === FALSE)
 					die("Error2 : " . mysqli_stmt_error($stmt));
-			echo "path = $path price = $price left = $left category = $category prodname = $product_name";
 			if (mysqli_stmt_execute($stmt) === FALSE)
 				die("Error3 : " . mysqli_stmt_error($stmt));
 			echo "<br/> Product informations successfully updated";
@@ -190,22 +189,29 @@ function modify_user()
 		echo "<br/>This user is not registered in the batabase";
 	else
 	{
+		$login = $_POST['login'];
+		$password = hash('MD5', $_POST['passwd']);
+		$modo = "N";
+		$first_name = $_POST['first_name'];
+		$last_name = $_POST['last_name'];
+		$email = $_POST['email'];
 		mysqli_shutdown($stmt, $mysqli);
-		if ($login == $sql_modif_user)
+		if ($login == $sql_modif_user && $password == $_POST['conf_passwd'])
 		{
-			$pasword = hash(MD5, $_POST['passwd']);
+			echo "pass = $password mod = $modo first = $first_name last = $last_name email = $email login = $login\n";
 			$mysqli = mysqli_open();
-			$query = 'UPDATE `products` SET `path` = ? , `price` = ?, `left` = ?, `category` = ?  WHERE `product_name` = ? ';
+			$query = 'UPDATE `user` SET `password` = ? , `modo` = ?, `first_name` = ?, `last_name` = ?, `email` = ? WHERE `login` = ? ';
 			if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
 				die("Error1 : " . mysqli_error($mysqli));
-			if (mysqli_stmt_bind_param($stmt, "sddss", $path, $price, $left, $category, $product_name) === FALSE)
+			if (mysqli_stmt_bind_param($stmt, "ssssss", $password, $modo, $first_name, $last_name, $email, $login) === FALSE)
 					die("Error2 : " . mysqli_stmt_error($stmt));
-			echo "path = $path price = $price left = $left category = $category prodname = $product_name";
 			if (mysqli_stmt_execute($stmt) === FALSE)
 				die("Error3 : " . mysqli_stmt_error($stmt));
-			echo "<br/> Product informations successfully updated";
+			echo "<br/> User informations successfully updated";
 			mysqli_shutdown($stmt, $mysqli);
 		}
+		else if ($password != $_POST['conf_passwd'])
+			echo "<br>The two passwords entered are differents, please try again";
 	}
 
 }
