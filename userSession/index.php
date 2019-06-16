@@ -87,6 +87,18 @@ mysqli_close($mysqli);
 ?>
 	<form method="post" action="./index.php">
 	<div class="row">
+	<?php echo "<h1>&nbsp&nbsp&nbsp ALL CHOCALATE </h1>"; ?>
+	<?php while($i < $row) { ?>
+			<div class="w33">
+			<img width="150" height="150" src="<?php echo $path[$i]; ?>">
+			<p> <?php echo $price[$i]; ?> $</p>
+			<?php if($left[$i] == 0) { echo "<p> victime de son succés </p>";}?>
+			<input type="hidden" name="<?php echo $product_id[$i]; ?>" value="<?php echo $product_name[$i]?>">
+			<input type="hidden" name="<?php echo "price" . $i; ?>" value="<?php echo $price[$i]; ?>">
+		</div>
+		<?php $i++; } $i = 0;?>
+	</div>
+	<div class="row">
 	<?php while($i < $row) { ?>
 		<?php if ($category[$i] == "kinder" && $left[$i] > 0) { if ($cat == 0) { ?>
 			<?php echo "<h3>&nbsp&nbsp&nbsp". $category[$i] . "</h3>";} $cat = 1; ?>
