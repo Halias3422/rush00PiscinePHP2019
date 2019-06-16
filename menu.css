@@ -42,3 +42,18 @@ nav li :hover
     text-decoration: none;
     color: brown;
 }
+
+footer
+{
+	position:absolute;
+	bottom:0;
+    background-color:  rgba(0, 0, 0, 0.829);
+    width:99%;
+}
+
+footer p
+{
+	text-align:right;
+	margin-right:1%;
+	color:whitesmoke;
+}

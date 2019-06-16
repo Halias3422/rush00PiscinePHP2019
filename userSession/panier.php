@@ -49,8 +49,6 @@ if (isset($_GET['user']) && $_GET['user'] == "log") {
 	mysqli_shutdown($stmt, $mysqli);
 ?>
 
-<?php } else {?>
-
-<?php } ?>
-</body>
-</html>
+<?php }
+require_once("../footer.php");
+?>
