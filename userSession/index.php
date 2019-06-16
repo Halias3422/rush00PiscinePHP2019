@@ -1,5 +1,6 @@
 <?php
-session_start();
+
+require_once("../header.php");
 include("../function/mysqli_function.php");
 include("../function/mysqli_function2.php");
 
@@ -84,30 +85,6 @@ if (mysqli_errno($mysqli)) {
 mysqli_close($mysqli);
 
 ?>
-
-<!DOCTYPE html>
-<html>
-	<head>
-		<link rel="stylesheet" href="../menu.css">
-		<link rel="stylesheet" href="box.css">
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Chocolatte</title>
-	</head>
-	<body>
-	<header>
-	<h1 class="deco">Chocolatte</h1>
-	<nav>
-		<ul>
-		<li><a href="./index.php">vitrine</li>
-		<li><a href="./panier.php?user=log">panier</a></li>
-		<li><a href="./settings.php">Setting</a></li>
-		<input type="hidden" name="logout" value="">
-		<li><a href="./logout.php">disconnect</a></li>
-		</ul>
-	</nav>
-</header>
 	<form method="post" action="./index.php">
 	<div class="row">
 	<?php while($i < $row) { ?>

@@ -1,29 +1,7 @@
 <?php
-session_start();
+require_once("../header.php");
 require_once ("../function/mysqli_function.php");
 ?>
-<!DOCTYPE html>
-<html>
-	<head>
-		<link rel="stylesheet" href="../menu.css">
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Chocolatte</title>
-	</head>
-	<body>
-	<header>
-	<h1 class="deco">Chocolatte</h1>
-	<nav>
-		<ul>
-		<li><a href="./index.php">vitrine</li>
-		<li><a href="./panier.php?user=log">panier</a></li>
-		<li><a href="./settings.php">Setting</a></li>
-		<input type="hidden" name="logout" value="">
-		<li><a href="./logout.php">disconnect</a></li>
-		</ul>
-	</nav>
-</header>
 </i><form method="post" enctype="multipart/form-data">
 	<input type='submit' name='modify_account' value='Modify My Settings'/>
 	<input type='submit' name='delete_account' value='Delete My Account'/>

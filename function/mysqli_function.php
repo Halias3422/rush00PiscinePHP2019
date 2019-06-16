@@ -23,7 +23,7 @@ function mysqli_open()
 
 /////////////////////////////////// ADMIN
 
-function create_user()
+function create_user($mode)
 {
 	$mysqli = mysqli_open();
 	$query = "SELECT `login` FROM `user` WHERE `login` = ? ";
@@ -38,13 +38,15 @@ function create_user()
 		die("Error4 : " . mysqli_stmt_error($stmt));
 	mysqli_stmt_fetch($stmt);
 	mysqli_shutdown($stmt, $mysqli);
-	if ($sql_login == $login) 
+	if ($sql_login == $login)
 		echo '<script> alert("this Username is already taken") </script>';
 	else
 	{
 		$mysqli = mysqli_open();
 		$query = "INSERT INTO `user`(`login`, `password`, `modo`, `first_name`, `last_name`, `email`) VALUE(?, ?, ?, ?, ?, ?)";
 		$modo = $_POST['modo'];
+		if ($mode == 0)
+			$modo = "N";
 		$passwd = hash("MD5", $_POST['passwd']);
 		$first_name = $_POST['first_name'];
 		$last_name = $_POST['last_name'];
@@ -254,7 +256,28 @@ function delete_user($mode)
 			echo "<br/>User successfully deleted from the database";
 		}
 	}
+}
 
+function print_command_history()
+{
+	if (isset($_GET) && isset($_GET['page']) && $_GET['page'] == "command_hist")
+{
+	$mysqli = mysqli_open();
+	$query="SELECT * FROM `commande`";
+	if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
+		die("Error1 : " . mysqli_error($mysqli));
+	if (mysqli_stmt_execute($stmt) === false)
+		die("Error3 : " . mysqli_stmt_error($stmt));
+	if (mysqli_stmt_bind_result($stmt, $col1, $col2, $col3) === FALSE)
+		die("Error4 : " . mysqli_stmt_error($stmt));
+	echo '<table style="border: 1px solid black;"><tr><td>Login ID</td><td>Total Paid</td><td>Date</td>';
+	while (mysqli_stmt_fetch($stmt))
+	{
+		echo "<tr><td>$col1</td><td>$col2</td><td>$col3</td>";
+	}
+	echo "</table><br>";
+
+}
 }
 
 ?>

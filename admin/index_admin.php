@@ -1,46 +1,12 @@
 
 <?php
-session_start();
+require_once("../header.php");
 $_SESSION['pageStore'] = "index.php";
-var_dump($_POST);
 require_once ("../function/mysqli_function.php");
-?>
-<!DOCTYPE html>
-<html>
-	<head>
-		<link rel="stylesheet" href="../menu.css">
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Chocolatte</title>
-	</head>
-	<body>
-	<header>
-	<h1 class="deco">Chocolatte</h1>
-	<nav>
-		<ul>
-<?php
-if (isset($_SESSION))
-{
-	if (isset($_SESSION['modo']) && $_SESSION['modo'] == 'Y')
-	{
+if (!isset($_SESSION) || !isset($_SESSION['modo']) || $_SESSION['modo'] == "N")
+	header("Location: ../index.php");
 
 ?>
-		<li><a href="../userSession/settings.php">Setting</a></li>
-		<li><a href="../index.php">disconnect</a></li>
-<?php
-	}
-?>
-		<li><a href="../index.php">vitrine</li>
-		<li><a href="../loginSystem/login.php">Log in</a></li>
-		<li><a href="../loginSystem/signUp.php">Sign in</a></li>
-		<li><a href="../userSession/panier.php">panier</a></li>
-<?php
-}
-?>
-		</ul>
-	</nav>
-</header>
 <form method="post" enctype="multipart/form-data" action="./index_admin.php">
 	<input type='submit' name='create_product' value='Register Product'/>
 	<input type='submit' name='delete_product' value='Delete Product'/>
@@ -50,20 +16,23 @@ if (isset($_SESSION))
 	<input type='submit' name='modify_user' value='Modify User'/>
 	<input type='submit' name='add_category' value='Add Category'/>
 	<input type='submit' name='delete_category' value='Delete Category'/>
+	<input type='submit' name="command_hist" value="Commands History"/>
 </form>
 <?php
 if (isset($_POST) && isset($_POST['create_product']))
 	header("Location: ./index_admin.php?page=create_product");
-if (isset($_POST) && isset($_POST['delete_product']))
+else if (isset($_POST) && isset($_POST['delete_product']))
 	header("Location: ./index_admin.php?page=delete_product");
-if (isset($_POST) && isset($_POST['modify_product']))
+else if (isset($_POST) && isset($_POST['modify_product']))
 	header("Location: ./index_admin.php?page=modify_product");
-if (isset($_POST) && isset($_POST['create_user']))
+else if (isset($_POST) && isset($_POST['create_user']))
 	header("Location: ./index_admin.php?page=create_user");
-if (isset($_POST) && isset($_POST['modify_user']))
+else if (isset($_POST) && isset($_POST['modify_user']))
 	header("Location: ./index_admin.php?page=modify_user");
-if (isset($_POST) && isset($_POST['delete_user']))
+else if (isset($_POST) && isset($_POST['delete_user']))
 	header("Location: ./index_admin.php?page=delete_user");
+else if (isset($_POST) && isset($_POST['command_hist']))
+	header("location: ./index_admin.php?page=command_hist");
 
 if (isset($_GET) && isset($_GET['page']) && ($_GET['page'] == "create_product" || $_GET['page'] == "delete_product" || $_GET['page'] == "modify_product"))
 {
@@ -170,11 +139,15 @@ else if (isset($_GET) && isset($_GET['page']) && ($_GET['page'] == "create_user"
 <?php
 	}
 	if ($_GET['page'] == "create_user" && isset($_POST['action']))
-		create_user();
+		create_user(1);
 	else if ($_GET['page'] == "modify_user" && isset($_POST['action_mod']))
 		modify_user();
 	else if ($_GET['page'] == "delete_user" && isset($_POST['action_del']))
 		delete_user(1);
+}
+if (isset($_GET) && isset($_GET['page']) && $_GET['page'] == "command_hist")
+{
+	print_command_history();
 }
 
 ?>
