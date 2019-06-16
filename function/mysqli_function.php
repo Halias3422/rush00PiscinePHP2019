@@ -49,7 +49,7 @@ function create_product()
 		if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE) {
 			die("Error1 : " . mysqli_error($mysqli));
 		}
-		if (mysqli_stmt_bind_param($stmt, "ssdds", $_POST['name_product'], $_POST['photo'], $_POST['prix'], $_POST['stock'], $_POST['category']) === false) {
+		if (mysqli_stmt_bind_param($stmt, "ssdds", $_POST['name_product'], $_POST['photo'], $_POST['price'], $_POST['stock'], $_POST['category']) === false) {
 			die("Error2 : " . mysqli_stmt_error($stmt));
 		}
 		if (mysqli_stmt_execute($stmt) === false) {
