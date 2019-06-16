@@ -44,7 +44,7 @@ function create_user()
 	{
 		$mysqli = mysqli_open();
 		$query = "INSERT INTO `user`(`login`, `password`, `modo`, `first_name`, `last_name`, `email`) VALUE(?, ?, ?, ?, ?, ?)";
-		$modo = 'N';
+		$modo = $_POST['modo'];
 		$passwd = hash("MD5", $_POST['passwd']);
 		$first_name = $_POST['first_name'];
 		$last_name = $_POST['last_name'];
@@ -191,7 +191,7 @@ function modify_user()
 	{
 		$login = $_POST['login'];
 		$password = hash('MD5', $_POST['passwd']);
-		$modo = "N";
+		$modo = $_POST['modo'];
 		$first_name = $_POST['first_name'];
 		$last_name = $_POST['last_name'];
 		$email = $_POST['email'];
