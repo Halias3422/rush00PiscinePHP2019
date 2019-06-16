@@ -23,7 +23,7 @@ else
 	echo '<li><a href="../index.php">Home</li>';
 if (isset($_SESSION) && !isset($_SESSION['login']))
 {
-	echo '<li><a href="../loginSystem/signUp.php">Sign in</a></li>';
+	echo '<li><a href="../loginSystem/signUp.php">Sign up</a></li>';
 	echo '<li><a href="../loginSystem/login.php">Log in</a></li>';
 	echo '<li><a href="../panier.php">Basket</a></li>';
 }

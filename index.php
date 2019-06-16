@@ -1,9 +1,9 @@
 <?php
-require_once("./install.php");
 session_start();
-$_SESSION['pageStore'] = "index.php";
-$_SESSION['notlog'] = 2;
-
+if (!$_SESSION) {
+	$_SESSION['notlog'] = rand(2, 5000);
+	$_SESSION['pageStore'] = "index.php";
+}
 include("./function/mysqli_function.php");
 include("./function/mysqli_function2.php");
 include("./function/mysqli_function3.php");
@@ -109,7 +109,7 @@ else
 	echo '<li><a href="./index.php">Home</li>';
 if (isset($_SESSION) && !isset($_SESSION['login']))
 {
-	echo '<li><a href="./loginSystem/signUp.php">Sign in</a></li>';
+	echo '<li><a href="./loginSystem/signUp.php">Sign up</a></li>';
 	echo '<li><a href="./loginSystem/login.php">Log in</a></li>';
 	echo '<li><a href="./panier.php">Basket</a></li>';
 }
@@ -130,6 +130,18 @@ if (isset($_SESSION))
 	</nav>
 	</header>
 	<form method="post" action="./index.php">
+	<div class="row">
+	<?php echo "<h1>&nbsp&nbsp&nbsp ALL CHOCOLATE </h1>"; ?>
+	<?php while($i < $row) { ?>
+			<div class="w33">
+			<img width="150" height="150" src="<?php echo $path[$i]; ?>">
+			<p> <?php echo $price[$i]; ?> $</p>
+			<?php if($left[$i] == 0) { echo "<p> victime de son succés </p>";}?>
+			<input type="hidden" name="<?php echo $product_id[$i]; ?>" value="<?php echo $product_name[$i]?>">
+			<input type="hidden" name="<?php echo "price" . $i; ?>" value="<?php echo $price[$i]; ?>">
+		</div>
+		<?php $i++; } $i = 0;?>
+	</div>
 	<div class="row">
 	<?php while($i < $row) { ?>
 		<?php if ($category[$i] == "kinder" && $left[$i] > 0) { if ($cat == 0) { ?>
@@ -184,11 +196,6 @@ if (isset($_SESSION))
 <div class="row">
 <input type="submit" name="action" value="addInBasket">
 </div>
-<form>
-
-	<input type="submit" value="enregistrement du produit">
-</form>
-</form>
 <?php
 require_once("./footer.php");
 ?>

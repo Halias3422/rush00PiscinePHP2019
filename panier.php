@@ -1,20 +1,15 @@
 <?php
-
+session_start();
 include("./function/mysqli_function.php");
 include("./function/mysqli_function2.php");
+include("./function/mysqli_function3.php");
 
 if (isset($_POST['action']) && isset($_POST['product'])) {
 	if ($_POST['action'] == "deleteProduct") {
-		updateProductsLeft();
-		deleteItemBasket();
+		updateProductsLeftNotLog();
+		deleteItemBasketNotLog();
 	}
 }
-if (isset($_POST['action'])) {
-	if ($_POST['action'] == "Buy") {
-		insertCommande();
-		deleteBasket();
-	}
-} 
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +34,7 @@ else
 	echo '<li><a href="./index.php">Home</li>';
 if (isset($_SESSION) && !isset($_SESSION['login']))
 {
-	echo '<li><a href="./loginSystem/signUp.php">Sign in</a></li>';
+	echo '<li><a href="./loginSystem/signUp.php">Sign up</a></li>';
 	echo '<li><a href="./loginSystem/login.php">Log in</a></li>';
 	echo '<li><a href="./panier.php">Basket</a></li>';
 }
@@ -60,7 +55,6 @@ if (isset($_SESSION))
 	</nav>
     </header>
 <?php
-if (isset($_GET['user']) && $_GET['user'] == "log") {
 	$totalPrice = 0;
 	$mysqli = mysqli_open();
 	$query = "SELECT * FROM `basket` WHERE `user_tmp_id` = ?";
@@ -80,23 +74,13 @@ if (isset($_GET['user']) && $_GET['user'] == "log") {
 	while (mysqli_stmt_fetch($stmt)) {
 		echo '<p>' . $col1 . "   quantity : " . $col3 . "   / price = " . $col2 * $col3 . " $</p>";
 
-		echo '<form method="post" action="./panier.php?user=log">';
+		echo '<form method="post" action="./panier.php">';
 		echo '<input type="submit" name="action" value="deleteProduct">';
 		echo '<input type="hidden" name="product" value="' . $col1 .'">';
 		echo '</form>';
 		$totalPrice += $col2 * $col3;
 	}
 	echo '<p> Total Price = ' . $totalPrice . ' $</p>';
-	echo '<form method="post" action="./panier.php?user=log">';
-	echo '<input type="submit"  name="action" value="Buy">';
-	echo '<input type="hidden" name="totalPrice" value="'. $totalPrice .'">';
-	echo '</form>';
 	mysqli_shutdown($stmt, $mysqli);
+    require_once("./footer.php");   
 ?>
-
-<?php } else {?>
-
-<?php } ?>
-
-</body>
-</html>
