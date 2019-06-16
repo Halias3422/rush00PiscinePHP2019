@@ -17,8 +17,11 @@ var_dump($_SESSION);
 	<h1 class="deco">Chocolatte</h1>
 	<nav>
 		<ul>
-		<li><a href="./index.php">Home</li>
 <?php
+if (isset($_SESSION['login']))
+	echo '<li><a href="./userSession/index.php">Home</li>';
+else
+	echo '<li><a href="./index.php">Home</li>';
 if (isset($_SESSION) && !isset($_SESSION['login']))
 {
 	echo '<li><a href="./loginSystem/signUp.php">Sign in</a></li>';
@@ -26,7 +29,7 @@ if (isset($_SESSION) && !isset($_SESSION['login']))
 	echo '<li><a href="./userSession/settings.php">Setting</a></li>';
 }
 ?>
-			<li><a href="./userSession/panier.php">Bucket</a></li>
+			<li><a href="./userSession/panier.php">Basket</a></li>
 <?php
 if (isset($_SESSION))
 {

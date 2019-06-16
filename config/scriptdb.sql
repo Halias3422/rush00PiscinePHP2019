@@ -28,16 +28,18 @@ CREATE TABLE IF NOT EXISTS `products` (
     `category` VARCHAR(80)
 );
 
+CREATE TABLE IF NOT EXISTS `commande` (
+    `user_id` VARCHAR(80),
+    `price` INT NOT NULL,
+    `date` DATETIME NOT NULL 
+);
+
 INSERT INTO `user`(`login`, `password`, `modo`, `first_name`, `last_name`, `email`) VALUE (
     "admin", MD5("admin"), 'Y', 'admin', 'admin', 'admin@admin.admin'
 );
 
 
 ////////////////////////////////////////////////////////////////////
-
-
-INSERT INTO `products`(`product_name`, `price`, `left`, `category`, `path`) VALUES(
-"kinder bueno", 2, 15, "kinder", "https://www.kinder.com/fr/s3fs-media/kinder_fr/public/styles/explore_products/public/2019-05/kinder_bueno_white_x2.png");
 
 INSERT INTO `products`(`product_name`, `price`, `left`, `category`, `path`) VALUES(
 "kinder country", 5, 180, "kinder", "https://image.noelshack.com/fichiers/2018/49/7/1544370009-kinder-country.jpg");
