@@ -74,5 +74,6 @@ if (isset($_SESSION))
 </form>
 </form>
 </figure> -->
-</body>
-</html>
+<?php
+require_once("./footer.php");
+?>
