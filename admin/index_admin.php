@@ -59,7 +59,7 @@ if (isset($_GET) && isset($_GET['page']) && ($_GET['page'] == "create_product" |
 	if ($_GET['page'] == "create_product" || $_GET['page'] == "modify_product")
 	{
 ?>
-<form method="post" enctype="multipart/form-data" action="./index_admin.php?page=create_product">
+<form method="post" enctype="multipart/form-data">
 	<label for="name_product">Name Product</label><br>
 	<input type="text" name="name_product" required> <br><br>
 	<label for="photo">Picture (use link)</label><br>
@@ -88,59 +88,26 @@ if (isset($_GET) && isset($_GET['page']) && ($_GET['page'] == "create_product" |
 		<input type="submit" name="action_del" value="Delete Product"><br>
 <?PHP
 	}
-}
-if (isset($_POST['action']) && isset($_GET['page']) && $_GET['page'] == "create_product")
+if ($_GET['page'] == "create_product")
 {
 ?>
 	<input type="submit" name="action" value="Register Product">
 	</form>
 <?php
-	create_product();
 }
-else if (isset($_POST['action']) && isset($_GET['page']) && $_GET['page'] == "modify_product")
+if ($_GET['page'] == "modify_product")
 {
 ?>
-	<input type="submit" name="action_modif" value="Modify Product">
+	<input type="submit" name="action_mod" value="Modify Product">
 	</form>
 <?php
-	//	modify_product();
-	$mysqli = mysqli_open();
-	$query = "SELECT `product_name` FROM `products` WHERE `product_name` = ? ";
-	$product = $_POST['name_product'];
-	if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
-		die("Error1 : " . mysqli_error($mysqli));
-	if (mysqli_stmt_bind_param($stmt, "s", $product) === FALSE)
-		die("Error2 : " . mysqli_stmt_error($stmt));
-	if (mysqli_stmt_execute($stmt) === FALSE)
-		die("Error3 : " . mysqli_stmt_error($stmt));
-	if (mysqli_stmt_bind_result($stmt, $sql_modif_product) === FALSE)
-		die("Error4 : " . mysqli_stmt_error($stmt));
-	if (!mysqli_stmt_fetch($stmt))
-		echo "<br/>This product is not registered in the batabase";
-	else
-	{
-		mysqli_shutdown($stmt, $mysqli);
-		if ($product == $sql_modif_product)
-		{
-			$path = $_POST['photo'];
-			$price = $_POST['price'];
-			$left = $_POST['stock'];
-			$category = $_POST['company'];
-			$mysqli = mysqli_open();
-			$query = "UPDATE `products` SET (`path`, `price`, `left`, `category`) WHERE `product_name` = ? ";
-			if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
-				die("Error1 : " . mysqli_error($mysqli));
-			if (mysqli_stmt_bind_param($stmt, "sdds", $path, $price, $left, $category) === FALSE)
-				die("Error2 : " . mysqli_stmt_error($stmt));
-			if (mysqli_stmt_execute($stmt) === FALSE)
-				die("Error3 : " . mysqli_stmt_error($stmt));
-				die("Error4 : " . mysqli_stmt_error($stmt));
-				echo "<br/> Product informations successfully updated";
-		}
-	}
 }
+if ($_GET['page'] == "create_product" && isset($_POST['action']))
+	create_product();
+else if (isset($_POST['action_mod']) && isset($_GET['page']) && $_GET['page'] == "modify_product")
+	modify_product();
 else if (isset($_POST['action_del']) && isset($_GET['page']) && $_GET['page'] == "delete_product")
 	delete_product();
+}
 ?>
-
 </html>

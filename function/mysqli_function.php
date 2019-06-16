@@ -132,4 +132,44 @@ function delete_product()
 		}
 	}
 }
+
+function modify_product()
+{
+	$mysqli = mysqli_open();
+	$query = "SELECT `product_name` FROM `products` WHERE `product_name` = ? ";
+	$product = $_POST['name_product'];
+	if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
+		die("Error1 : " . mysqli_error($mysqli));
+	if (mysqli_stmt_bind_param($stmt, "s", $product) === FALSE)
+		die("Error2 : " . mysqli_stmt_error($stmt));
+	if (mysqli_stmt_execute($stmt) === FALSE)
+		die("Error3 : " . mysqli_stmt_error($stmt));
+	if (mysqli_stmt_bind_result($stmt, $sql_modif_product) === FALSE)
+		die("Error4 : " . mysqli_stmt_error($stmt));
+	if (!mysqli_stmt_fetch($stmt))
+		echo "<br/>This product is not registered in the batabase";
+	else
+	{
+		mysqli_shutdown($stmt, $mysqli);
+		if ($product == $sql_modif_product)
+		{
+			$path = $_POST['photo'];
+			$price = $_POST['price'];
+			$left = $_POST['stock'];
+			$category = $_POST['company'];
+			$product_name = $_POST['name_product'];
+			$mysqli = mysqli_open();
+			$query = 'UPDATE `products` SET `path` = ? , `price` = ?, `left` = ?, `category` = ?  WHERE `product_name` = ? ';
+			if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
+				die("Error1 : " . mysqli_error($mysqli));
+			if (mysqli_stmt_bind_param($stmt, "sddss", $path, $price, $left, $category, $product_name) === FALSE)
+					die("Error2 : " . mysqli_stmt_error($stmt));
+			echo "path = $path price = $price left = $left category = $category prodname = $product_name";
+			if (mysqli_stmt_execute($stmt) === FALSE)
+				die("Error3 : " . mysqli_stmt_error($stmt));
+			echo "<br/> Product informations successfully updated";
+			mysqli_shutdown($stmt, $mysqli);
+		}
+	}
+}
 ?>
