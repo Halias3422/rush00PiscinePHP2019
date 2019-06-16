@@ -3,6 +3,7 @@
 session_start();
 $_SESSION['pageStore'] = "index.php";
 var_dump($_POST);
+require_once ("../function/mysqli_function.php");
 ?>
 
 <!DOCTYPE html>
@@ -29,74 +30,66 @@ var_dump($_POST);
 	</ul>
 
 </div>
-
+<div>
 </header>
-<h1> Formulaire Produits </h1>
 <form method="post" enctype="multipart/form-data" action="./index_admin.php">
-	<label for="titre">name_product</label><br>
-	<input type="text" id="nom" name="name_product" placeholder="le titre du produit"required> <br><br>
-
-	<label for="photo">photo</label><br>
-	<input type="file" id="photo" name="photo"required><br><br>
-
-    <label for="marque">marque</label><br>
-    <select name="marque">
-		<option value="choose">Choose</option>
-        <option value="kinder">Kinder</option>
-        <option value="ferero">Ferero</option>
-        <option value="milka">Milka</option>
-        <option value="cote dor">Cote D'Or</option>
-    </select><br/><br/>
-
-	<label for="prix">prix</label><br>
-	<input type="text" id="prix" name="prix" placeholder="le prix du produit"required><br><br>
-
-	<label for="stock">stock</label><br>
-	<input type="text" id="stock" name="stock" placeholder="le stock du produit"required><br><br>
-
-	<input type="submit" name="action" value="enregistrement du produit">
+	<input type='submit' name='create_product' value='Register Product'/>
+	<input type='submit' name='delete_product' value='Delete Product'/>
+	<input type='submit' name='modify_product' value='Modify Product'/>
+	<input type='submit' name='create_user' value='Create User'/>
+	<input type='submit' name='delete_user' value='Delete User'/>
+	<input type='submit' name='modify_user' value='Modify User'/>
+	<input type='submit' name='add_category' value='Add Category'/>
+	<input type='submit' name='delete_category' value='Delete Category'/>
+</form>
 <?php
-	if (isset($_POST['action']))
-	{
-		$mysqli = mysqli_connect("mysql", "root", "rootpass", "rush");
-		if (!$mysqli) {
-		echo "Erreur : Impossible de se connecter à MySQL." . PHP_EOL;
-		echo "Errno de débogage : " . mysqli_connect_errno() . PHP_EOL;
-		echo "Erreur de débogage : " . mysqli_connect_error() . PHP_EOL;
-		exit;
-	}
-	$query = "SELECT `product_name` FROM `products` WHERE `product_name` = ?  ";
-	$product = $_POST['name_product'];
-	if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
-		die("Error1 : " . mysqli_error($mysqli));
-	if (mysqli_stmt_bind_param($stmt, "s", $login) === FALSE)
-		die("Error2 : " . mysqli_stmt_error($stmt));
-	if (mysqli_stmt_execute($stmt) === FALSE)
-		die("Error3 : " . mysqli_stmt_error($stmt));
-	if (mysqli_stmt_bind_result($stmt, $sql_name_product) === FALSE)
-		die("Error4 : " . mysqli_stmt_error($stmt));
-	if (mysqli_stmt_fetch($stmt))
-	{
-		echo "Product already exists\n";
-		exit;
-	}
-	else if ($sql_name_product == $product)
-	{
-		echo "Product already exists";
-		exit;
-	}
-	else
-	{
-		mysqli_stmt_close($stmt);
-		if (mysqli_errno($mysqli))
-			die("Error4 : " . mysqli_stmt_error($stmt));
-		mysqli_close($mysqli);
-	}
+if (isset($_POST) && isset($_POST['create_product']))
+	header("Location: ./index_admin.php?page=create_product");
+if (isset($_POST) && isset($_POST['delete_product']))
+	header("Location: ./index_admin.php?page=delete_product");
+if (isset($_POST) && isset($_POST['modify_product']))
+	header("Location: ./index_admin.php?page=modify_product");
 
+if (isset($_GET) && isset($_GET['page']) && ($_GET['page'] == "create_product" || $_GET['page'] == "delete_product" || $_GET['page'] == "modify_product"))
+{
+	if ($_GET['page'] == "create_product")
+		echo "<h1> Register Product </h1>";
+	else if ($_GET['page'] == "delete_product")
+		echo "<h1> Delete Product </h1>";
+	else if ($_GET['page'] == "modify_product")
+		echo "<h1> Modify Product </h1>";
+?>
+<form method="post" enctype="multipart/form-data" action="./index_admin.php?page=create_product">
+	<label for="titre">Name Product</label><br>
+	<input type="text" id="nom" name="name_product" required> <br><br>
+	<label for="photo">Picture (use link)</label><br>
+	<input type="text" id="photo" name="photo" required><br><br>
+	<label for="marque">Company</label><br>
+	<select name="marque">
+		<option value="choose">Choose</option>
+		<option value="kinder">Kinder</option>
+		<option value="ferero">Ferero</option>
+		<option value="milka">Milka</option>
+		<option value="cote dor">Cote D'Or</option>
+	</select><br/><br/>
+	<label for="prix">Price</label><br>
+	<input type="number" id="prix" name="prix" required><br><br>
+	<label for="stock">Stock</label><br>
+	<input type="number" id="stock" name="stock" required><br><br>
+	<input type="submit" name="action" value="Register Product">
+</form>
+<?PHP
 }
+?>
+
+
+
+
+<?php
+
+if (isset($_POST['action']))
+	create_product();
 
 ?>
-</form>
-</form>
 
 </html>

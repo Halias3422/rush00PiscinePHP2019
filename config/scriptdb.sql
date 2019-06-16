@@ -4,8 +4,11 @@ USE `rush`;
 CREATE TABLE IF NOT EXISTS `user` (
     `user_id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     `login` VARCHAR(80) NOT NULL,
-    `password` VARCHAR(32) NOT NULL,
-    `modo` ENUM('Y', 'N')
+    `password` VARCHAR(128) NOT NULL,
+    `modo` ENUM('Y', 'N'),
+    `first_name` VARCHAR(80) NOT NULL,
+    `last_name` VARCHAR(80) NOT NULL,
+    `email` VARCHAR(80) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `basket` (
@@ -25,8 +28,8 @@ CREATE TABLE IF NOT EXISTS `products` (
     `category` VARCHAR(80)
 );
 
-INSERT INTO `user`(`login`, `password`, `modo`) VALUE (
-    "admin", MD5("admin"), 'Y'
+INSERT INTO `user`(`login`, `password`, `modo`, `first_name`, `last_name`, `email`) VALUE (
+    "admin", MD5("admin"), 'Y', 'admin', 'admin', 'admin@admin.admin'
 );
 
 
