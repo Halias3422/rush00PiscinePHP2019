@@ -140,15 +140,6 @@ mysqli_close($mysqli);
 <div class="row">
 <input type="submit" name="action" value="addInBasket">
 </div>
-<form>
-<<<<<<< HEAD
-
-
-</body>
-
-</html>
-=======
 <?php
 require_once("../footer.php")
 ?>
->>>>>>> 44ca5cc6deb49b7acd2f1d5b60361a82eeed25dc
