@@ -45,7 +45,7 @@ function create_user()
 		$mysqli = mysqli_open();
 		$query = "INSERT INTO `user`(`login`, `password`, `modo`, `first_name`, `last_name`, `email`) VALUE(?, ?, ?, ?, ?, ?)";
 		$modo = 'N';
-		$passwd = hash("whirlpool", $_POST['passwd']);
+		$passwd = hash("MD5", $_POST['passwd']);
 		$first_name = $_POST['first_name'];
 		$last_name = $_POST['last_name'];
 		$email = $_POST['email'];
@@ -196,9 +196,8 @@ function modify_user()
 		$last_name = $_POST['last_name'];
 		$email = $_POST['email'];
 		mysqli_shutdown($stmt, $mysqli);
-		if ($login == $sql_modif_user && $password == $_POST['conf_passwd'])
+		if ($login == $sql_modif_user && $password == hash('MD5', $_POST['conf_passwd']))
 		{
-			echo "pass = $password mod = $modo first = $first_name last = $last_name email = $email login = $login\n";
 			$mysqli = mysqli_open();
 			$query = 'UPDATE `user` SET `password` = ? , `modo` = ?, `first_name` = ?, `last_name` = ?, `email` = ? WHERE `login` = ? ';
 			if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
