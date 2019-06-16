@@ -3,6 +3,44 @@ session_start();
 include("../function/mysqli_function.php");
 include("../function/mysqli_function2.php");
 
+if (isset($_POST['action']) && $_POST['action'] == "addInBasket") {
+    $j = 0;
+    $user_tmp = 1;
+    $items = 1;
+    $validProducts = 0;
+    $singleProduct = [];
+    $product = count($_POST) - 1;
+    foreach ($_POST as $key=>$value) {
+        if ($j < 3) {
+            if ($value == "0") {
+                $validProducts = 1;
+            }
+            array_push($singleProduct, $value);
+            $j++;
+        }
+        if ($j == 3 && $validProducts == 0 && checkUserBasket($singleProduct) == TRUE) {
+            addInBasket($singleProduct);
+            updateProductAmount($singleProduct);
+            $j = 0;
+            $items++;
+            $singleProduct = [];
+        }
+        if ($j == 3 && $validProducts == 0 && checkUserBasket($singleProduct) == FALSE) {
+            updateBasket($singleProduct);
+            updateProductAmount($singleProduct);
+            $j = 0;
+            $items++;
+            $singleProduct = [];
+        }
+        if ($j == 3 && $validProducts == 1) {
+            $j = 0;
+            $items++;
+            $singleProducts = [];
+            $validProducts = 0;
+        }
+    }
+}
+
 $product_id = [];
 $path = [];
 $category = [];
@@ -45,45 +83,6 @@ if (mysqli_errno($mysqli)) {
 }
 mysqli_close($mysqli);
 
-if (isset($_POST['action']) && $_POST['action'] == "addInBasket") {
-    $j = 0;
-    $user_tmp = 1;
-    $items = 1;
-    $validProducts = 0;
-    $singleProduct = [];
-    $product = count($_POST) - 1;
-    foreach ($_POST as $key=>$value) {
-        if ($j < 3) {
-            if ($value == "0") {
-                $validProducts = 1;
-            }
-            array_push($singleProduct, $value);
-            $j++;
-        }
-        if ($j == 3 && $validProducts == 0 && checkUserBasket($singleProduct) == TRUE) {
-            addInBasket($singleProduct);
-            updateProductAmount($singleProduct);
-            $j = 0;
-            $items++;
-            $singleProduct = [];
-        }
-        if ($j == 3 && $validProducts == 0 && checkUserBasket($singleProduct) == FALSE) {
-            updateBasket($singleProduct);
-            updateProductAmount($singleProduct);
-            $j = 0;
-            $items++;
-            $singleProduct = [];
-        }
-        if ($j == 3 && $validProducts == 1) {
-            $j = 0;
-            $items++;
-            $singleProducts = [];
-            $validProducts = 0;
-        }
-    }
-}
-
-
 ?>
 
 <!DOCTYPE html>
@@ -113,7 +112,7 @@ if (isset($_POST['action']) && $_POST['action'] == "addInBasket") {
 </div>
 
 </header>
-    <form method="post" action="#">
+    <form method="post" action="./index.php">
     <div>
     <?php while($i < $row) { ?>
         <?php if ($category[$i] == "kinder" && $left[$i] > 0) { if ($cat == 0) { echo "<p>" . $category[$i] . "</p>";} $cat = 1; ?>
@@ -161,10 +160,10 @@ if (isset($_POST['action']) && $_POST['action'] == "addInBasket") {
         </div>
         <?php } $i++; } $i = 0; $cat = 0;?>
     </div>
-<button type="submit" name="action" value="addInBasket">Add items in basket </button>
+<input type="submit" name="action" value="addInBasket">
 <form>
 
 
 </body>
 
-</html>
+</html
