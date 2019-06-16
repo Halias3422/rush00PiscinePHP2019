@@ -45,7 +45,7 @@ function create_user()
 		$mysqli = mysqli_open();
 		$query = "INSERT INTO `user`(`login`, `password`, `modo`, `first_name`, `last_name`, `email`) VALUE(?, ?, ?, ?, ?, ?)";
 		$modo = 'N';
-		$passwd = hash("whirlpool", $_POST['passwd']);
+		$passwd = hash("MD5", $_POST['passwd']);
 		$first_name = $_POST['first_name'];
 		$last_name = $_POST['last_name'];
 		$email = $_POST['email'];
