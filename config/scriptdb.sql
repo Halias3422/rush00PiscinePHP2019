@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `products` (
 );
 
 INSERT INTO `user`(`login`, `password`, `modo`, `first_name`, `last_name`, `email`) VALUE (
-    "admin", MD5("admin"), 'Y', 'admin', 'admin', 'admin@admin.admin'
+    "admin", WHIRLPOOL("admin"), 'Y', 'admin', 'admin', 'admin@admin.admin'
 );
 
 
