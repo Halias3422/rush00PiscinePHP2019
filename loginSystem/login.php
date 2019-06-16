@@ -1,5 +1,6 @@
 <?php
 require_once("../header.php");
+include("../function/mysqli_function3.php");
 include ("../function/mysqli_function.php");
 ?>
 	<div class="login">
@@ -33,6 +34,7 @@ if (isset($_POST['login']))
 	{
 		$_SESSION['login'] = $sql_login;
 		$_SESSION['modo'] = $sql_modo;
+		selectBasketNotLog();
 		$_SESSION['notlog'] = "";
 		if ($_SESSION['login'] === "admin")
 			header("Location: ../admin/index_admin.php");

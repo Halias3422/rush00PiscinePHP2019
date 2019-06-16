@@ -1,7 +1,9 @@
 <?php
 session_start();
-$_SESSION['pageStore'] = "index.php";
-$_SESSION['notlog'] = 2;
+if (!$_SESSION) {
+	$_SESSION['notlog'] = rand(2, 5000);
+	$_SESSION['pageStore'] = "index.php";
+}
 var_dump($_SESSION);
 
 include("./function/mysqli_function.php");
@@ -184,11 +186,6 @@ if (isset($_SESSION))
 <div class="row">
 <input type="submit" name="action" value="addInBasket">
 </div>
-<form>
-
-	<input type="submit" value="enregistrement du produit">
-</form>
-</form>
 <?php
 require_once("./footer.php");
 ?>
