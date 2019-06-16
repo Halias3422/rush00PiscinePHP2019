@@ -1,5 +1,6 @@
 <?php
 session_start();
+var_dump($_SESSION);
 include("../function/mysqli_function.php");
 include("../function/mysqli_function2.php");
 ?>
@@ -18,7 +19,6 @@ include("../function/mysqli_function2.php");
 	<nav>
 		<ul>
 <?php
-var_dump($_SESSION);
 if (isset($_SESSION))
 {
 	if (isset($_SESSION['modo']) && $_SESSION['modo'] == 'Y')

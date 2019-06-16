@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 var_dump($_SESSION);
 include ("../function/mysqli_function.php");
 ?>
@@ -20,8 +19,8 @@ include ("../function/mysqli_function.php");
 		<ul>
 		<li><a href="../index.php">Home</li>
 		<li><a href="../loginSystem/login.php">Log in</a></li>
-<?
-if (isset($_SESSION) && isset($S_SESSION['login']))
+<?php
+if (isset($_SESSION) && !isset($S_SESSION['login']))
 	echo '<li><a href="../loginSystem/signUp.php">Sign in</a></li>';
 ?>
 			<li><a href="../userSession/panier.php">Bucket</a></li>
@@ -31,8 +30,10 @@ if (isset($_SESSION))
 	if (isset($_SESSION['modo']) && $_SESSION['modo'] == 'Y')
 		echo '<li><a href="../userSession/settings.php">Setting</a></li>';
 	if (isset($_SESSION['login']))
+	{
 		echo '<li><a href="../userSession/panier.php">'.$_SESSION['login'].'</a></li>';
 		echo '<li><a href="../userSession/logout.php">Log out</a></li>';
+	}
 }
 ?>
 		</ul>

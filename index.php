@@ -1,31 +1,47 @@
 <?php
 session_start();
 $_SESSION['pageStore'] = "index.php";
-<<<<<<< HEAD
-=======
-var_dump($_POST);
-require_once("./header_index.php");
->>>>>>> ef842bf11437d6c3313e1a4288235b69853dd854
+var_dump($_SESSION);
 ?>
-
-<div>
-	<h1><a href="#">Camagru</a></h1>
-
-	<ul>
-		<li><a href="./loginSystem/login.php">Login</a></li>
-		<li><a href="./userSession/panier.php">Panier</a></li>
-	</ul>
-
-</div>
-
-</header>
-<<<<<<< HEAD
-=======
-<figure>
-	<figcaption><form action="index.php" method="POST">
-		<input type="number" min="0" name="quantite" value="0"/>
-		<button><input type="submit" name="kinder" value="Ajouter au panier"/></button></figcaption>
-
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" href="./menu.css">
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Chocolatte</title>
+	</head>
+	<body>
+	<header>
+	<h1 class="deco">Chocolatte</h1>
+	<nav>
+		<ul>
+		<li><a href="./index.php">Home</li>
+<?php
+if (isset($_SESSION) && !isset($_SESSION['login']))
+{
+	echo '<li><a href="./loginSystem/signUp.php">Sign in</a></li>';
+	echo '<li><a href="./loginSystem/login.php">Log in</a></li>';
+	echo '<li><a href="./userSession/settings.php">Setting</a></li>';
+}
+?>
+			<li><a href="./userSession/panier.php">Bucket</a></li>
+<?php
+if (isset($_SESSION))
+{
+	if (isset($_SESSION['modo']) && $_SESSION['modo'] == 'Y')
+		echo '<li><a href="./admin/index_admin.php">Management</a></li>';
+	if (isset($_SESSION['login']))
+	{
+		echo '<li><a href="./userSession/panier.php">'.$_SESSION['login'].'</a></li>';
+		echo '<li><a href="./userSession/logout.php">Log out</a></li>';
+	}
+}
+?>
+		</ul>
+	</nav>
+	</header>
 <!-- <h1> Formulaire Produits </h1>
 <form method="post" enctype="multipart/form-data" action="">
 	<label for="reference">reference</label><br>
@@ -56,6 +72,5 @@ require_once("./header_index.php");
 </form>
 </form>
 </figure> -->
-
->>>>>>> ef842bf11437d6c3313e1a4288235b69853dd854
+</body>
 </html>

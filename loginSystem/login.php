@@ -18,28 +18,28 @@ include ("../function/mysqli_function.php");
 	<h1 class="deco">Chocolatte</h1>
 	<nav>
 		<ul>
+		<li><a href="../index.php">Home</li>
+		<li><a href="../loginSystem/login.php">Log in</a></li>
+<?php
+if (isset($_SESSION) && !isset($S_SESSION['login']))
+	echo '<li><a href="../loginSystem/signUp.php">Sign in</a></li>';
+?>
+			<li><a href="../userSession/panier.php">Bucket</a></li>
 <?php
 if (isset($_SESSION))
 {
 	if (isset($_SESSION['modo']) && $_SESSION['modo'] == 'Y')
+		echo '<li><a href="../userSession/settings.php">Setting</a></li>';
+	if (isset($_SESSION['login']))
 	{
-
-?>
-		<li><a href="../userSession/settings.php">Setting</a></li>
-		<li><a href="../index.php">disconnect</a></li>
-<?php
+		echo '<li><a href="../userSession/panier.php">'.$_SESSION['login'].'</a></li>';
+		echo '<li><a href="../userSession/logout.php">Log out</a></li>';
 	}
-?>
-		<li><a href="../index.php">vitrine</li>
-		<li><a href="../loginSystem/login.php">Log in</a></li>
-		<li><a href="../loginSystem/signUp.php">Sign in</a></li>
-		<li><a href="../userSession/panier.php">panier</a></li>
-<?php
 }
 ?>
 		</ul>
 	</nav>
-</header>
+	</header>
 	<div class="login">
 		<form action="./login.php" method="POST">
 			<label for="titre">Login:</label><br>
