@@ -11,6 +11,7 @@ $product_name = [];
 
 $row = 0;
 $i = 0;
+$cat = 0;
 
 $mysqli = mysqli_connect("mysql", "root", "rootpass", "rush");
 if (!$mysqli) {
@@ -38,26 +39,12 @@ while (mysqli_stmt_fetch($stmt)) {
     array_push($left, $col4);
     array_push($category, $col5);
     array_push($path, $col6);
-    //var_dump($col6);
 }
-// var_dump($product_id); echo "<br>";
-// var_dump($product_name); echo "<br>";
-// var_dump($price); echo "<br>";
-// var_dump($left); echo "<br>";
-// var_dump($category); echo "<br>";
-// var_dump($path); echo "<br> <br>";
-
-// echo $row . "<br>";
-
-
-/* Fermeture du traitement */
 mysqli_stmt_close($stmt);
 
 if (mysqli_errno($mysqli)) {
     die("Error4 : " . mysqli_stmt_error($stmt));
 }
-echo "Succès : Une connexion correcte à MySQL a été faite! La base de donnée my_db est génial." . PHP_EOL;
-echo "Information d'hôte : " . mysqli_get_host_info($mysqli) . PHP_EOL;	
 mysqli_close($mysqli);
 
 
@@ -82,7 +69,7 @@ mysqli_close($mysqli);
     <h1><a href="#">Rush</a></h1>
 
     <ul>
-        <li><a href="./panier.php">Panier</a></li>
+        <li><a href="./panier.php?user=log">Panier</a></li>
         <input type="hidden" name="logout" value="">
         <li><a href="./logout.php">Logout</a></li>
     </ul>
@@ -90,47 +77,50 @@ mysqli_close($mysqli);
 </div>
 
 </header>
-<?php while($i < $row) { ?>
     <form method="post" action="#">
     <div>
-        <?php if ($category[$i] == "kinder") { ?>
+    <?php while($i < $row) { ?>
+        <?php if ($category[$i] == "kinder") { if ($cat == 0) { echo "<p>" . $category[$i] . "</p>";} $cat = 1; ?>
         <div>
             <img width="150" height="150" src="<?php echo $path[$i]; ?>">
             <p> <?php echo $price[$i]; ?> $</p>
             <input type="number" min="0"max="<?php echo $left[$i] ?>" name="quantityOf<?php echo $product_id[$i]; ?>" value="0"/>
             <input type="hidden" name="<?php echo $product_id[$i]; ?>" value="<?php echo $product_name[$i]?>">
-
         </div>
-        <?php } ?>
-
-        <?php if ($category[$i] == "ferero") { ?>
-        <div>
-            <img width="150" height="150" src="<?php echo $path[$i]; ?>">
-            <p> <?php echo $price[$i]; ?> $</p>
-            <input type="number" min="0" max="<?php echo $left[$i] ?>" name="quantityOf<?php echo $product_id[$i]; ?>" value="0"/>
-            <input type="hidden" name="<?php echo $product_id[$i]; ?>" value="<?php echo $product_name[$i]?>">
-        </div>
-        <?php } ?>
-
-        <?php if ($category[$i] == "milka") { ?>
-        <div>
-            <img width="150" height="150" src="<?php echo $path[$i]; ?>">
-            <p> <?php echo $price[$i]; ?> $</p>
-            <input type="number" min="0" max="<?php echo $left[$i] ?>" name="quantityOf<?php echo $product_id[$i]; ?>" value="0"/>
-            <input type="hidden" name="<?php echo $product_id[$i]; ?>" value="<?php echo $product_name[$i]?>">
-        </div>
-        <?php } ?>
-
-        <?php if ($category[$i] == "cote d'or") { ?>
-        <div>
-            <img width="150" height="150" src="<?php echo $path[$i]; ?>">
-            <p> <?php echo $price[$i]; ?> $</p>
-            <input type="number" min="0" max="<?php echo $left[$i] ?>" name="quantityOf<?php echo $product_id[$i]; ?>" value="0"/>
-            <input type="hidden" name="<?php echo $product_id[$i]; ?>" value="<?php echo $product_name[$i]?>">
-        </div>
-        <?php } ?>
+        <?php } $i++; } $i = 0; $cat = 0;?>
     </div>
-<?php $i++; } ?>
+    <div>
+    <?php while($i < $row) { ?>
+        <?php if ($category[$i] == "ferero") { if ($cat == 0) { echo "<p>" . $category[$i] . "</p>";} $cat = 1; ?>
+        <div>
+            <img width="150" height="150" src="<?php echo $path[$i]; ?>">
+            <p> <?php echo $price[$i]; ?> $</p>
+            <input type="number" min="0" max="<?php echo $left[$i] ?>" name="quantityOf<?php echo $product_id[$i]; ?>" value="0"/>
+            <input type="hidden" name="<?php echo $product_id[$i]; ?>" value="<?php echo $product_name[$i]?>">
+        </div>
+        <?php } $i++; } $i = 0; $cat = 0;?>
+    </div>
+    <div>
+    <?php while($i < $row) { ?>
+        <?php if ($category[$i] == "milka") { if ($cat == 0) { echo "<p>" . $category[$i] . "</p>";} $cat = 1;?>
+        <div>
+            <img width="150" height="150" src="<?php echo $path[$i]; ?>">
+            <p> <?php echo $price[$i]; ?> $</p>
+            <input type="number" min="0" max="<?php echo $left[$i] ?>" name="quantityOf<?php echo $product_id[$i]; ?>" value="0"/>
+            <input type="hidden" name="<?php echo $product_id[$i]; ?>" value="<?php echo $product_name[$i]?>">
+        </div>
+        <?php } $i++; } $i = 0; $cat = 0;?>
+    </div>
+    <?php while($i < $row) { ?>
+        <?php if ($category[$i] == "cote d'or") { if ($cat == 0) { echo "<p>" . $category[$i] . "</p>";} $cat = 1; ?>
+        <div>
+            <img width="150" height="150" src="<?php echo $path[$i]; ?>">
+            <p> <?php echo $price[$i]; ?> $</p>
+            <input type="number" min="0" max="<?php echo $left[$i] ?>" name="quantityOf<?php echo $product_id[$i]; ?>" value="0"/>
+            <input type="hidden" name="<?php echo $product_id[$i]; ?>" value="<?php echo $product_name[$i]?>">
+        </div>
+        <?php } $i++; } $i = 0; $cat = 0;?>
+    </div>
 <button type="submit" name="action" value="addInBasket">Add items in basket </button>
 <form>
 

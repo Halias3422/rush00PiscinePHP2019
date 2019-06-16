@@ -22,8 +22,10 @@ var_dump($_SESSION);
 		<h1><a href="#">Camagru</a></h1>
 
 		<ul>
-			<li><a href="../loginSystem/login.php">Login</a></li>
-			<li><a href="../loginSystem/register.php">Sign up</a></li>
+			<li><a href="./panier.php?user=log">Basket</a></li>
+			<li><a href="./index.php">Market</a></li>
+			<input type="hidden" name="logout" value="">
+			<li><a href="./logout.php">Logout</a></li>	
 		</ul>
 
 	</div>

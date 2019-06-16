@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `basket` (
     `product_name` VARCHAR(80) NOT NULL,
     `price` INT,
     `amount` INT NOT NULL,
-    `user_id` INT NOT NULL,
+    `user_id` VARCHAR(80) NOT NULL,
     `user_tmp_id` INT NOT NULL
 );
 
