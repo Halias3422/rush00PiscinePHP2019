@@ -1,36 +1,44 @@
 
-body ul{
-    border-radius: 10px;
+nav ul 
+{
+    padding: 0px;
+    margin: 0px;
+    list-style-type: none;
+    background-color:  rgba(0, 0, 0, 0.829);
 }
 
-ul.menu li{
-    display: none;
-    padding:10px 10px 10px 20px;
+nav li
+{
+    display: inline-block;
+    width: 100px;
+    height: 40px;
+    margin: 0px;
+    padding: 0px;
+    border-right: 1px solid whitesmoke;
+    text-align: center;
+    line-height: 40px;
 }
-ul.menu li:first-child{
+
+nav li a
+{
     display: block;
-    border-top:0px;
-    padding-left:10px;
-    
-}
-ul.menu:hover li{
-    display:block;
-}
-
-ul.menu{
-    background-color: green;
-    padding:0px;
-margin: 0;
-float: left;
-    width: 33%;
+    text-decoration: none;
+    color: whitesmoke;
 }
 
 header
 {
-    height: 97px;
+    background-color:  rgba(0, 0, 0, 0.829);
+    width:100%;
 }
 
-li
+nav li :hover
 {
+    background-color: cyan;
+}
+.deco
+{
+    display: block;
     text-decoration: none;
+    color: brown;
 }
