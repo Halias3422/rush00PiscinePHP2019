@@ -29,7 +29,7 @@ if (isset($_POST['login']))
 		die("Error4 : " . mysqli_stmt_error($stmt));
 	mysqli_stmt_fetch($stmt);
 	mysqli_shutdown($stmt, $mysqli);
-	if (hash("MD5", $password) == $sql_passwd)
+	if (hash("whirlpool", $password) == $sql_passwd)
 	{
 		$_SESSION['login'] = $sql_login;
 		$_SESSION['modo'] = $sql_modo;

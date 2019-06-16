@@ -1,8 +1,8 @@
 <?php
+require_once("./install.php");
 session_start();
 $_SESSION['pageStore'] = "index.php";
 $_SESSION['notlog'] = 2;
-var_dump($_SESSION);
 
 include("./function/mysqli_function.php");
 include("./function/mysqli_function2.php");

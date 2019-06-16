@@ -47,7 +47,7 @@ function create_user($mode)
 		$modo = $_POST['modo'];
 		if ($mode == 0)
 			$modo = "N";
-		$passwd = hash("MD5", $_POST['passwd']);
+		$passwd = hash("whirlpool", $_POST['passwd']);
 		$first_name = $_POST['first_name'];
 		$last_name = $_POST['last_name'];
 		$email = $_POST['email'];
@@ -192,13 +192,13 @@ function modify_user()
 	else
 	{
 		$login = $_POST['login'];
-		$password = hash('MD5', $_POST['passwd']);
+		$password = hash('whirlpool', $_POST['passwd']);
 		$modo = $_POST['modo'];
 		$first_name = $_POST['first_name'];
 		$last_name = $_POST['last_name'];
 		$email = $_POST['email'];
 		mysqli_shutdown($stmt, $mysqli);
-		if ($login == $sql_modif_user && $password == hash('MD5', $_POST['conf_passwd']))
+		if ($login == $sql_modif_user && $password == hash('whirlpool', $_POST['conf_passwd']))
 		{
 			$mysqli = mysqli_open();
 			$query = 'UPDATE `user` SET `password` = ? , `modo` = ?, `first_name` = ?, `last_name` = ?, `email` = ? WHERE `login` = ? ';
@@ -239,7 +239,7 @@ function delete_user($mode)
 			echo "You don't have the right to remove other user's account";
 			exit;
 		}
-		if ($login == $sql_login && ($mode || hash('md5', ($_POST['passwd'])) == $sql_passwd))
+		if ($login == $sql_login && ($mode || hash('whirlpool', ($_POST['passwd'])) == $sql_passwd))
 		{
 			$mysqli= mysqli_open();
 			$query = "DELETE FROM `user` WHERE `login` = ? ";
@@ -254,6 +254,7 @@ function delete_user($mode)
 				die("Error4 : " . mysqli_stmt_error($stmt));
 			mysqli_close($mysqli);
 			echo "<br/>User successfully deleted from the database";
+			header("Location: ../userSession/logout.php");
 		}
 	}
 }

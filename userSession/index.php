@@ -1,5 +1,4 @@
 <?php
-
 require_once("../header.php");
 include("../function/mysqli_function.php");
 include("../function/mysqli_function2.php");
