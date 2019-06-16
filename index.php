@@ -1,8 +1,11 @@
 <?php
 session_start();
 $_SESSION['pageStore'] = "index.php";
+<<<<<<< HEAD
+=======
 var_dump($_POST);
 require_once("./header_index.php");
+>>>>>>> ef842bf11437d6c3313e1a4288235b69853dd854
 ?>
 
 <div>
@@ -16,6 +19,8 @@ require_once("./header_index.php");
 </div>
 
 </header>
+<<<<<<< HEAD
+=======
 <figure>
 	<figcaption><form action="index.php" method="POST">
 		<input type="number" min="0" name="quantite" value="0"/>
@@ -52,4 +57,5 @@ require_once("./header_index.php");
 </form>
 </figure> -->
 
+>>>>>>> ef842bf11437d6c3313e1a4288235b69853dd854
 </html>
