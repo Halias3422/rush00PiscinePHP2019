@@ -33,6 +33,7 @@ if (isset($_POST['login']))
 	{
 		$_SESSION['login'] = $sql_login;
 		$_SESSION['modo'] = $sql_modo;
+		$_SESSION['notlog'] = "";
 		if ($_SESSION['login'] === "admin")
 			header("Location: ../admin/index_admin.php");
 		else
