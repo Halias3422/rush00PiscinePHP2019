@@ -14,8 +14,6 @@ if (!isset($_SESSION) || !isset($_SESSION['modo']) || $_SESSION['modo'] == "N")
 	<input type='submit' name='create_user' class="adminIndex_bt" value='Create User'/>
 	<input type='submit' name='delete_user' class="adminIndex_bt" value='Delete User'/>
 	<input type='submit' name='modify_user' class="adminIndex_bt" value='Modify User'/>
-	<input type='submit' name='add_category' class="adminIndex_bt" value='Add Category'/>
-	<input type='submit' name='delete_category' class="adminIndex_bt" value='Delete Category'/>
 	<input type='submit' name="command_hist" class="adminIndex_bt" value="Commands History"/>
 </form>
 <?php
@@ -151,7 +149,7 @@ else if (isset($_GET) && isset($_GET['page']) && ($_GET['page'] == "create_user"
 	if ($_GET['page'] == "create_user" && isset($_POST['action']))
 		create_user(1);
 	else if ($_GET['page'] == "modify_user" && isset($_POST['action_mod']))
-		modify_user();
+		modify_user(1);
 	else if ($_GET['page'] == "delete_user" && isset($_POST['action_del']))
 		delete_user(1);
 }
@@ -159,7 +157,7 @@ if (isset($_GET) && isset($_GET['page']) && $_GET['page'] == "command_hist")
 {
 	print_command_history();
 }
-
 ?>
+</div>
 </body>
 </html>

@@ -51,10 +51,8 @@ if (isset($_GET['user']) && $_GET['user'] == "log") {
 	echo '</form>';
 	echo '</div></div>';
 	mysqli_shutdown($stmt, $mysqli);
+}
 ?>
-
-<?php } else {?>
-
-<?php } ?>
+</div>
 </body>
 </html>

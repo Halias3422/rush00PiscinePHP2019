@@ -23,7 +23,7 @@ else
 	echo '<li><a href="../index.php">Home</li>';
 if (isset($_SESSION) && !isset($_SESSION['login']))
 {
-	echo '<li><a href="../loginSystem/signUp.php">Sign in</a></li>';
+	echo '<li><a href="../loginSystem/signUp.php">Sign up</a></li>';
 	echo '<li><a href="../loginSystem/login.php">Log in</a></li>';
 	echo '<li><a href="../panier.php">Basket</a></li>';
 }
@@ -34,9 +34,10 @@ if (isset($_SESSION))
 		echo '<li><a href="../admin/index_admin.php">Management</a></li>';
 	if (isset($_SESSION['login']))
 	{
-		echo '<li><a href="../userSession/panier.php?user=log">Basket</a></li>';	
+		echo '<li><a href="../userSession/panier.php?user=log">Basket</a></li>';
 		echo '<li><a href="../userSession/settings.php">Setting</a></li>';
 		echo '<li><a href="../userSession/logout.php">Log out</a></li>';
+		echo '<li style="color: whitesmoke;">'.$_SESSION['login'].'</li>';
 	}
 }
 ?>

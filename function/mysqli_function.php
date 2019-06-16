@@ -47,7 +47,7 @@ function create_user($mode)
 		$modo = $_POST['modo'];
 		if ($mode == 0)
 			$modo = "N";
-		$passwd = hash("MD5", $_POST['passwd']);
+		$passwd = hash("whirlpool", $_POST['passwd']);
 		$first_name = $_POST['first_name'];
 		$last_name = $_POST['last_name'];
 		$email = $_POST['email'];
@@ -174,11 +174,53 @@ function modify_product()
 	}
 }
 
-function modify_user()
+function modify_user_non_admin()
 {
 	$mysqli = mysqli_open();
 	$query = "SELECT `login` FROM `user` WHERE `login` = ? ";
-	$login = $_POST['login'];
+	$login = $_SESSION['login'];
+	if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
+		die("Error1 : " . mysqli_error($mysqli));
+	if (mysqli_stmt_bind_param($stmt, "s", $login) === FALSE)
+		die("Error2 : " . mysqli_stmt_error($stmt));
+	if (mysqli_stmt_execute($stmt) === FALSE)
+		die("Error3 : " . mysqli_stmt_error($stmt));
+	if (mysqli_stmt_bind_result($stmt, $sql_modif_user) === FALSE)
+		die("Error4 : " . mysqli_stmt_error($stmt));
+	if (!mysqli_stmt_fetch($stmt))
+		echo "<br/>This user is not registered in the batabase";
+	else
+	{
+		$password = hash('whirlpool', $_POST['passwd']);
+		$first_name = $_POST['first_name'];
+		$last_name = $_POST['last_name'];
+		$email = $_POST['email'];
+		mysqli_shutdown($stmt, $mysqli);
+		if ($login == $sql_modif_user)
+		{
+			$mysqli = mysqli_open();
+			$query = 'UPDATE `user` SET `password` = ? , `first_name` = ?, `last_name` = ?, `email` = ? WHERE `login` = ? ';
+			if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
+				die("Error1 : " . mysqli_error($mysqli));
+			if (mysqli_stmt_bind_param($stmt, "sssss", $password, $first_name, $last_name, $email, $login) === FALSE)
+				die("Error2 : " . mysqli_stmt_error($stmt));
+			if (mysqli_stmt_execute($stmt) === FALSE)
+				die("Error3 : " . mysqli_stmt_error($stmt));
+			echo "<br/> User informations successfully updated";
+			mysqli_shutdown($stmt, $mysqli);
+		}
+	}
+}
+
+
+function modify_user($mode)
+{
+	$mysqli = mysqli_open();
+	$query = "SELECT `login` FROM `user` WHERE `login` = ? ";
+	if ($mode == 1)
+		$login = $_POST['login'];
+	else
+		$login = $_SESSION['login'];
 	if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE)
 		die("Error1 : " . mysqli_error($mysqli));
 	if (mysqli_stmt_bind_param($stmt, "s", $login) === FALSE)
@@ -192,13 +234,13 @@ function modify_user()
 	else
 	{
 		$login = $_POST['login'];
-		$password = hash('MD5', $_POST['passwd']);
+		$password = hash('whirlpool', $_POST['passwd']);
 		$modo = $_POST['modo'];
 		$first_name = $_POST['first_name'];
 		$last_name = $_POST['last_name'];
 		$email = $_POST['email'];
 		mysqli_shutdown($stmt, $mysqli);
-		if ($login == $sql_modif_user && $password == hash('MD5', $_POST['conf_passwd']))
+		if ($login == $sql_modif_user && $password == hash('whirlpool', $_POST['conf_passwd']))
 		{
 			$mysqli = mysqli_open();
 			$query = 'UPDATE `user` SET `password` = ? , `modo` = ?, `first_name` = ?, `last_name` = ?, `email` = ? WHERE `login` = ? ';
@@ -239,7 +281,7 @@ function delete_user($mode)
 			echo "You don't have the right to remove other user's account";
 			exit;
 		}
-		if ($login == $sql_login && ($mode || hash('md5', ($_POST['passwd'])) == $sql_passwd))
+		if ($login == $sql_login && ($mode || hash('whirlpool', ($_POST['passwd'])) == $sql_passwd))
 		{
 			$mysqli= mysqli_open();
 			$query = "DELETE FROM `user` WHERE `login` = ? ";
@@ -254,6 +296,7 @@ function delete_user($mode)
 				die("Error4 : " . mysqli_stmt_error($stmt));
 			mysqli_close($mysqli);
 			echo "<br/>User successfully deleted from the database";
+			header("Location: ../userSession/logout.php");
 		}
 	}
 }

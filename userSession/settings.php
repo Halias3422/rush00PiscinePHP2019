@@ -48,19 +48,17 @@ else if (isset($_GET) && isset($_GET['page']) && $_GET['page'] == "modify_accoun
 	</div></div>
 <?php
 }
-if (isset($_POST['login']) && isset($_POST['passwd']) && isset($_POST['action']) && isset($_SESSION['login']))
+if (isset($_POST['passwd']) && isset($_POST['action']) && isset($_SESSION['login']))
 {
 	if (isset($_GET))
 	{
 		if (isset($_GET['page']) && $_GET['page'] == "modify_account")
-			modify_user();
+			modify_user_non_admin();
 		if (isset($_GET['page']) && $_GET['page'] == "delete_account")
 			delete_user(0);
 	}
 }
 ?>
-
-<!DOCTYPE html>
-
-	</body>
-	</html>
+</div>
+</body>
+</html>

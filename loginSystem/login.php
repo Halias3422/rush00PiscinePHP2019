@@ -1,5 +1,6 @@
 <?php
 require_once("../header.php");
+include("../function/mysqli_function3.php");
 include ("../function/mysqli_function.php");
 ?>
 <div class="outer">
@@ -31,10 +32,12 @@ if (isset($_POST['login']))
 		die("Error4 : " . mysqli_stmt_error($stmt));
 	mysqli_stmt_fetch($stmt);
 	mysqli_shutdown($stmt, $mysqli);
-	if (hash("MD5", $password) == $sql_passwd)
+	if (hash("whirlpool", $password) == $sql_passwd)
 	{
 		$_SESSION['login'] = $sql_login;
 		$_SESSION['modo'] = $sql_modo;
+		selectBasketNotLog();
+		$_SESSION['notlog'] = "";
 		if ($_SESSION['login'] === "admin")
 			header("Location: ../admin/index_admin.php");
 		else
@@ -44,7 +47,6 @@ if (isset($_POST['login']))
 		echo '<p class="login">Please enter a valid Login and Password<br /></pb>';
 }
 ?>
-
-<!DOCTYPE html>
+</div>
 </body>
 </html>

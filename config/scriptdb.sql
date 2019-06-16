@@ -39,8 +39,6 @@ INSERT INTO `user`(`login`, `password`, `modo`, `first_name`, `last_name`, `emai
 );
 
 
-////////////////////////////////////////////////////////////////////
-
 INSERT INTO `products`(`product_name`, `price`, `left`, `category`, `path`) VALUES(
 "kinder country", 5, 180, "kinder", "https://image.noelshack.com/fichiers/2018/49/7/1544370009-kinder-country.jpg");
 

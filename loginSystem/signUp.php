@@ -34,5 +34,6 @@ if (isset($_POST['login']))
 		echo '<p>Please enter a valid Login and Password<br /></p>';
 }
 ?>
-	</body>
+</div>
+</body>
 </html>
