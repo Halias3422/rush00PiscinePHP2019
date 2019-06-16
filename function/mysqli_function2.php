@@ -27,7 +27,7 @@ function updateProductAmount($singleProduct) {
 }
 
 function addInBasket ($singleProduct) {
-    $user_tmp = 1;
+            $user_tmp = 1;
             $mysqli = mysqli_connect("mysql", "root", "rootpass", "rush");
             if (!$mysqli) {
                 echo "Erreur : Impossible de se connecter à MySQL." . PHP_EOL;
@@ -226,6 +226,35 @@ function updateProductsLeft() {
         die("Error1 : " . mysqli_error($mysqli));
     }
     if (mysqli_stmt_bind_param($stmt, "ss", $amount, $_POST['product']) === false) {
+        die("Error2 : " . mysqli_stmt_error($stmt));
+    }
+    if (mysqli_stmt_execute($stmt) === false) {
+        die("Error3 : " . mysqli_stmt_error($stmt));
+    }
+    /* Récupération des valeurs */
+    mysqli_stmt_close($stmt);
+
+    if (mysqli_errno($mysqli)) {
+        die("Error4 : " . mysqli_stmt_error($stmt));
+    }
+    mysqli_close($mysqli);
+}
+
+function insertCommande() {
+    $date = date("Y-m-d H:i:s");
+    $amount = selectItemsBasketAmount();
+    $mysqli = mysqli_connect("mysql", "root", "rootpass", "rush");
+    if (!$mysqli) {
+        echo "Erreur : Impossible de se connecter à MySQL." . PHP_EOL;
+        echo "Errno de débogage : " . mysqli_connect_errno() . PHP_EOL;
+        echo "Erreur de débogage : " . mysqli_connect_error() . PHP_EOL;
+        exit;
+    }
+    $query = "INSERT INTO `commande`(`user_id`, `price`, `date`) VALUE ( ?, ?, ?)";
+    if (($stmt = mysqli_prepare($mysqli, $query)) === FALSE) {
+        die("Error1 : " . mysqli_error($mysqli));
+    }
+    if (mysqli_stmt_bind_param($stmt, "sss", $_SESSION['login'], $_POST['totalPrice'], $date) === false) {
         die("Error2 : " . mysqli_stmt_error($stmt));
     }
     if (mysqli_stmt_execute($stmt) === false) {

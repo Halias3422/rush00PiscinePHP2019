@@ -17,26 +17,11 @@ include("../function/mysqli_function2.php");
 	<h1 class="deco">Chocolatte</h1>
 	<nav>
 		<ul>
-<?php
-var_dump($_SESSION);
-if (isset($_SESSION))
-{
-	if (isset($_SESSION['modo']) && $_SESSION['modo'] == 'Y')
-	{
-
-?>
-		<li><a href="../userSession/settings.php">Setting</a></li>
-		<li><a href="../index.php">disconnect</a></li>
-<?php
-	}
-?>
-		<li><a href="../index.php">vitrine</li>
-		<li><a href="../loginSystem/login.php">Log in</a></li>
-		<li><a href="../loginSystem/signUp.php">Sign in</a></li>
-		<li><a href="../userSession/panier.php">panier</a></li>
-<?php
-}
-?>
+		<li><a href="./index.php">vitrine</a></li>
+		<li><a href="./panier.php?user=log">panier</a></li>
+		<li><a href="./settings.php">Setting</a></li>
+		<input type="hidden" name="logout" value="">
+		<li><a href="./logout.php">disconnect</a></li>
 		</ul>
 	</nav>
 </header>
@@ -49,6 +34,7 @@ if (isset($_POST['action']) && isset($_POST['product'])) {
 }
 if (isset($_POST['action'])) {
 	if ($_POST['action'] == "Buy") {
+		insertCommande();
 		deleteBasket();
 	}
 }
@@ -81,6 +67,7 @@ if (isset($_GET['user']) && $_GET['user'] == "log") {
 	echo '<p> Total Price = ' . $totalPrice . ' $</p>';
 	echo '<form method="post" action="./panier.php?user=log">';
 	echo '<input type="submit"  name="action" value="Buy">';
+	echo '<input type="hidden" name="totalPrice" value="'. $totalPrice .'">';
 	echo '</form>';
 	mysqli_shutdown($stmt, $mysqli);
 ?>

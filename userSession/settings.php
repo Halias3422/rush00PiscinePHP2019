@@ -16,26 +16,11 @@ require_once ("../function/mysqli_function.php");
 	<h1 class="deco">Chocolatte</h1>
 	<nav>
 		<ul>
-<?php
-var_dump($_SESSION);
-if (isset($_SESSION))
-{
-	if (isset($_SESSION['modo']) && $_SESSION['modo'] == 'Y')
-	{
-
-?>
-		<li><a href="../userSession/settings.php">Setting</a></li>
-		<li><a href="../index.php">disconnect</a></li>
-<?php
-	}
-?>
-		<li><a href="../index.php">vitrine</li>
-		<li><a href="../loginSystem/login.php">Log in</a></li>
-		<li><a href="../loginSystem/signUp.php">Sign in</a></li>
-		<li><a href="../userSession/panier.php">panier</a></li>
-<?php
-}
-?>
+		<li><a href="./index.php">vitrine</li>
+		<li><a href="./panier.php?user=log">panier</a></li>
+		<li><a href="./settings.php">Setting</a></li>
+		<input type="hidden" name="logout" value="">
+		<li><a href="./logout.php">disconnect</a></li>
 		</ul>
 	</nav>
 </header>
