@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS `basket` (
     `product_name` VARCHAR(80) NOT NULL,
     `price` INT,
     `amount` INT NOT NULL,
-    `user_id` INT NOT NULL,
+    `user_id` VARCHAR(80) NOT NULL,
     `user_tmp_id` INT NOT NULL
 );
 
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `products` (
 );
 
 INSERT INTO `user`(`login`, `password`, `modo`, `first_name`, `last_name`, `email`) VALUE (
-    "admin", WHIRLPOOL("admin"), 'Y', 'admin', 'admin', 'admin@admin.admin'
+    "admin", MD5("admin"), 'Y', 'admin', 'admin', 'admin@admin.admin'
 );
 
 
